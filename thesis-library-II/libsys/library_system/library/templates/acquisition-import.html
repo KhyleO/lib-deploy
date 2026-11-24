@@ -1,0 +1,190 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Upload Course List - Henry Luce III Library</title>
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #F7F7F7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* MAIN CONTENT & FORM */
+    main {
+      flex: 1;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .upload-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 35px 30px;
+      width: 100%;
+      max-width: 550px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+
+    .page-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #02062C;
+      margin-bottom: 25px;
+    }
+
+    .file-input-group {
+      margin-bottom: 25px;
+      text-align: left;
+    }
+
+    .file-input-group label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+
+    .file-input-group input[type="file"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px dashed #02062C;
+      border-radius: 8px;
+      background: #F7F7F7;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.85rem;
+      color: #333;
+      cursor: pointer;
+    }
+
+    .btn-submit {
+      background: #02062C;
+      color: #fff;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+      width: 100%;
+    }
+
+    .btn-submit:hover {
+      background: #0b145f;
+    }
+
+    /* LOADING OVERLAY */
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(2, 6, 44, 0.75);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      color: #fff;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #D19D1C;
+      animation: spin 1s ease-in-out infinite;
+      margin-bottom: 15px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* FOOTER */
+    footer {
+      background: #02062C;
+      color: #fff;
+      text-align: center;
+      padding: 18px 15px;
+      font-size: 0.95rem;
+      font-weight: 400;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- MAIN CONTAINER -->
+  <main>
+    <div class="upload-card">
+      <h2 class="page-title">Upload Subject List File</h2>
+
+      <form method="post" enctype="multipart/form-data" action="{% url 'acquisition_batch' %}">
+        {% csrf_token %}
+        <div class="file-input-group">
+          <label for="subject_list">Select Course/Subject File (.txt, .csv, .xlsx, .xls):</label>
+          <input type="file" id="subject_list" name="subject_list" accept=".txt,.csv,.xlsx,.xls" required>
+        </div>
+        <button type="submit" class="btn-submit">Upload &amp; Search</button>
+      </form>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    © 2026 Henry Luce III Library, All Rights Reserved
+  </footer>
+
+  <!-- LOADING OVERLAY -->
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <p>Processing request, please wait...</p>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script>
+    function showLoading() {
+      const loadingOverlay = document.getElementById("loadingOverlay");
+      if (loadingOverlay) {
+        loadingOverlay.style.display = "flex";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const forms = document.querySelectorAll("form");
+      forms.forEach(form => {
+        form.addEventListener("submit", showLoading);
+      });
+    });
+
+    window.addEventListener("beforeunload", showLoading);
+  </script>
+</body>
+</html>
+
+
+
+

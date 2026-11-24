@@ -1,0 +1,342 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Import Bibliography Entries - Henry Luce III Library</title>
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #F7F7F7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* MAIN CONTENT & FORM (CENTERED) */
+    main {
+      flex: 1;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .upload-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 35px 30px;
+      width: 100%;
+      max-width: 550px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+
+    /* Expands card width if preview table is displayed */
+    .upload-card.has-preview {
+      max-width: 1100px;
+    }
+
+    .page-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #02062C;
+      margin-bottom: 25px;
+    }
+
+    /* FORM STYLES */
+    .file-input-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .file-input-group label,
+    .file-input-group p label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+
+    .file-input-group input[type="file"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px dashed #02062C;
+      border-radius: 8px;
+      background: #F7F7F7;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.85rem;
+      color: #333;
+      cursor: pointer;
+    }
+
+    .file-info {
+      font-size: 0.85rem;
+      color: #374151;
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    /* BUTTON ACTION BAR */
+    .action-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .btn-submit {
+      background: #02062C;
+      color: #fff;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+      width: 100%;
+    }
+
+    .btn-submit:hover {
+      background: #0b145f;
+    }
+
+    .action-save-cancel {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .btn-save {
+      background: #02062C;
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+      flex: 1;
+    }
+
+    .btn-save:hover {
+      background: #0b145f;
+    }
+
+    .btn-cancel {
+      background: #dc2626;
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+      flex: 1;
+    }
+
+    .btn-cancel:hover {
+      background: #b91c1c;
+    }
+
+    /* PREVIEW TABLE */
+    .table-wrapper {
+      overflow-x: auto;
+      margin-top: 25px;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      text-align: left;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    th {
+      background-color: #02062C;
+      color: #ffffff;
+      padding: 12px 14px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #e5e7eb;
+      color: #374151;
+      white-space: nowrap;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f9fafb;
+    }
+
+    tbody tr:hover {
+      background-color: #f3f4f6;
+    }
+
+    /* LOADING OVERLAY */
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(2, 6, 44, 0.75);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      color: #fff;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #D19D1C;
+      animation: spin 1s ease-in-out infinite;
+      margin-bottom: 15px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* FOOTER */
+    footer {
+      background: #02062C;
+      color: #fff;
+      text-align: center;
+      padding: 18px 15px;
+      font-size: 0.95rem;
+      font-weight: 400;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- MAIN CONTAINER -->
+  <main>
+    <div class="upload-card {% if preview %}has-preview{% endif %}">
+      <h2 class="page-title">Import Bibliography Entries</h2>
+
+      <form method="post" enctype="multipart/form-data" action="{% url 'import_books' %}">
+        {% csrf_token %}
+
+        <div class="file-input-group">
+          {{ form.as_p }}
+        </div>
+
+        {% if filename %}
+          <p class="file-info"><strong>Uploaded file:</strong> {{ filename }}</p>
+        {% endif %}
+
+        <div class="action-bar">
+          <button type="submit" name="action" value="preview" class="btn-submit">Upload &amp; Preview</button>
+          
+          <div class="action-save-cancel">
+            <button type="submit" name="action" value="confirm" class="btn-save">Save</button>
+            <button type="submit" name="action" value="cancel" class="btn-cancel">Cancel</button>
+          </div>
+        </div>
+      </form>
+
+      {% if preview %}
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Accession Number</th>
+              <th>Call Number</th>
+              <th>Author</th>
+              <th>Title</th>
+              <th>Edition</th>
+              <th>Volume</th>
+              <th>Publisher</th>
+              <th>Year</th>
+              <th>ISBN</th>
+              <th>Department</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for entry in preview %}
+            <tr>
+              <td>{{ entry.accession_number }}</td>
+              <td>{{ entry.call_number }}</td>
+              <td>{{ entry.author }}</td>
+              <td>{{ entry.title }}</td>
+              <td>{{ entry.edition }}</td>
+              <td>{{ entry.volume }}</td>
+              <td>{{ entry.publisher }}</td>
+              <td>{{ entry.year }}</td>
+              <td>{{ entry.isbn }}</td>
+              <td>{{ entry.department }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    © 2026 Henry Luce III Library, All Rights Reserved
+  </footer>
+
+  <!-- LOADING OVERLAY -->
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <p>Processing request, please wait...</p>
+  </div>
+
+  
+  <!-- SCRIPTS -->
+  <script>
+    function showLoading() {
+      const loadingOverlay = document.getElementById("loadingOverlay");
+      if (loadingOverlay) {
+        loadingOverlay.style.display = "flex";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const forms = document.querySelectorAll("form");
+      forms.forEach(form => {
+        form.addEventListener("submit", showLoading);
+      });
+    });
+
+    window.addEventListener("beforeunload", showLoading);
+  </script>
+</body>
+</html>
+
+
+

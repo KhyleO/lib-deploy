@@ -1,0 +1,674 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Encoding - Henry Luce III Library</title>
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+     *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family:'Poppins', sans-serif;
+      background:#F7F7F7;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    /* HEADER */
+    header {
+        background: #D19D1C;
+        padding: 16px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+    .logo img {
+      height: 80px;
+      width: auto;
+      margin: -15px 20px;
+    }
+
+    nav{
+      display:flex;
+      gap:35px;
+    }
+
+    nav a{
+      text-decoration:none;
+      color:#02062C;
+      font-size:1rem;
+      font-weight:500;
+      transition:0.3s;
+    }
+
+    nav a:hover{
+      opacity:0.7;
+    }
+
+    .login-btn{
+      background:#02062C;
+      color:#fff;
+      border:none;
+      padding:10px 22px;
+      border-radius:8px;
+      font-size:0.95rem;
+      font-weight:500;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    .login-btn:hover{
+      background:#0b145f;
+    }
+
+    /* MAIN */
+    main{
+      flex:1;
+      padding:20px;
+    }
+
+    .main-content-wrapper {
+      width: 90%;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .page-title{
+      font-size:1.5rem;
+      font-weight:700;
+      color:#02062C;
+      margin-bottom:15px;
+    }
+
+    .sub-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .toolbar{
+      margin-right: 10px;
+    }
+
+    /* FORM CONTAINER */
+    .form-container {
+      background: #fff;
+      margin-top: 15px;
+      padding: 24px 30px;
+      border-radius: 16px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      width: 100%;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:40px;
+    }
+
+    .form-group{
+      margin-bottom:10px;
+    }
+
+    label{
+      display:block;
+      margin-bottom:2px;
+      font-size:0.8rem;
+      font-weight:600;
+      color:#02062C;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 6px 8px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 0.7rem;
+      font-family: 'Poppins', sans-serif;
+      outline: none;
+      transition: 0.3s;
+      background: #fff;
+    }
+
+    input:focus,
+    select:focus{
+      border-color:#D19D1C;
+      box-shadow:0 0 0 3px rgba(209,157,28,0.15);
+    }
+
+    /* FOOTER */
+    footer{
+      background:#02062C;
+      color:#fff;
+      text-align:center;
+      padding:18px 15px;
+      font-size:0.95rem;
+      font-weight:400;
+    }
+
+    /* BUTTON GROUP */
+    .button-group{
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+      margin-top: 0px;
+      margin-bottom: 5px;
+      flex-wrap:wrap;
+    }
+
+    .import-btn{
+      display: flex;
+      gap: 200px;
+      flex-wrap: wrap;
+    }
+
+    .import-btn,
+    .save-btn,
+    .clear-btn{
+      background: #02062C;
+      font-family:'Poppins', sans-serif;
+      border:none;
+      padding:12px 28px;
+      border-radius:10px;
+      font-size:0.8rem;
+      font-weight:600;
+      cursor:pointer;
+      transition:0.3s;
+      text-decoration: none;
+    }
+
+    .import-btn,
+    .save-btn{
+      background:#02062C;
+      color:#fff;
+    }
+
+    .import-btn:hover,
+    .save-btn:hover{
+      background:#0b145f;
+    }
+
+    .clear-btn{
+      background:#D19D1C;
+      color:#02062C;
+    }
+
+    .clear-btn:hover{
+      opacity:0.9;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width:900px){
+      .form-grid{
+        grid-template-columns:1fr;
+      }
+
+      header{
+        flex-direction:column;
+        text-align:center;
+      }
+
+      nav{
+        justify-content:center;
+        flex-wrap:wrap;
+        gap:20px;
+      }
+
+      main{
+        padding:25px 15px;
+      }
+    }
+
+    @media (max-width:480px){
+      nav{
+        flex-direction:column;
+        gap:12px;
+      }
+
+      .page-title{
+        font-size:1.5rem;
+      }
+
+      .form-container{
+        padding:20px;
+      }
+
+      footer{
+        font-size:0.85rem;
+      }
+    }
+
+    /* NOTIF */
+    .notif {
+      position: fixed;
+      top: 42%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10000;
+
+      padding: 18px 36px;
+      border-radius: 12px;
+      font-weight: 500;
+      font-size: 1rem;  
+      text-align: center;
+      min-width: 320px;
+      max-width: 90%;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+      
+      background-color: rgba(229, 247, 236, 0.95);
+      backdrop-filter: blur(4px);
+      border: 1px solid #91d19e;
+      color: #1a5229;
+
+      opacity: 0;
+      animation: popInOut 1.5s ease-in-out forwards;
+      animation-delay: 0.0s;
+    }
+
+    .notif-error {
+      background-color: #fce8e6 !important;
+      border: 1px solid #f5c2c7 !important;
+      color: #a94442 !important;
+    }
+
+    @keyframes popInOut {
+      0%   { opacity: 0; transform: translate(-50%, -40%) scale(0.9); }
+      15%  { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      85%  { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -60%) scale(0.95); visibility: hidden; }
+    }
+
+    .required-field {
+      color: #d9534f;
+      font-weight: bold;
+      margin-left: 2px;
+    }
+
+    .error-text {
+      color: #d9534f;
+      font-size: 0.7rem;
+      margin-top: 2px;
+      display: block;
+    }
+
+    /* LOADING OVERLAY SPINNER */
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(2, 6, 44, 0.75);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #D19D1C;
+      animation: spin 1s ease-in-out infinite;
+      margin-bottom: 12px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      right: 0;
+      background-color: #02062C;
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 40px;
+      z-index: 1001;
+    }
+
+    .sidebar a {
+      padding: 15px 0px 15px 50px;
+      text-decoration: none;
+      font-size: 1rem;
+      color: #FFFFFF;
+      display: block;
+      transition: 0.2s;
+    }
+
+    .sidebar a:hover {
+      background-color: #0b145f;
+    }
+
+    .sidebar .closebtn {
+      position: absolute;
+      top: 5px;
+      right: 15px;
+      font-size: 2rem;
+      color: #FFFFFF;
+      cursor: pointer;
+    }
+
+  </style>
+
+</head>
+<body>
+
+  
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <img src="{% static 'css/images/henryluce.png' %}" alt="Library Logo">
+    </div>
+
+    <nav>
+      {% if user.is_authenticated %}
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'acquisition' %}">Search Records</a>
+        {% if is_librarian %}
+        <a href="{% url 'acquisition_batch' %}">Syllabus Match</a>
+        {% endif %}
+        {% if is_librarian %}
+        <a href="{% url 'encoding' %}">Encoding</a>
+        {% endif %}
+      {% endif %}
+    </nav>
+
+    {% if user.is_authenticated %}
+      <button class="login-btn" onclick="openSidebar()">
+        {{ user.username }}
+      </button>
+    {% else %}
+      <a href="{% url 'login' %}" class="login-btn">Login</a>
+    {% endif %}
+
+  </header>
+
+  <div id="sidebarMenu" class="sidebar">
+    <span class="closebtn" onclick="closeSidebar()">&times;</span>
+    <a href="{% url 'profile' %}">Profile</a>
+    <a href="{% url 'login' %}">Logout</a>
+  </div>
+
+
+  <!-- MAIN -->
+  <main>
+    <div class="main-content-wrapper">
+      
+      <!-- SINGLE CENTERED NOTIFICATION OVERLAY -->
+      {% if message or form.errors %}
+        <div class="notif {% if form.errors %}notif-error{% endif %}" id="notif">
+          {% if message %}
+            {{ message }}
+          {% elif form.errors %}
+            Please fix the errors in the form before submitting.
+          {% endif %}
+        </div>
+
+        <script>
+          setTimeout(function() {
+            var notif = document.getElementById("notif");
+            if (notif) {
+              notif.style.display = "none";
+            }
+          }, 2400);
+        </script>
+      {% endif %}
+
+      <div class="sub-header">
+        <h2 class="page-title">  
+          {% if entry %}Edit Acquisition Entry{% else %}Acquisition Encoding Form{% endif %}
+        </h2>
+
+        <div class="toolbar">
+          {% if not entry %}
+          <a href="{% url 'import_books' %}" class="import-btn">Import</a>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-container">
+        <form method="post" id="encodingForm" action="{% if entry %}{% url 'edit_entry' entry.id %}{% else %}{% url 'encoding' %}{% endif %}">
+          {% csrf_token %}
+
+          <div class="form-grid">
+            <!-- COLUMN 1 -->
+            <div>
+              <div class="form-group">
+                <label>Date Received <span class="required-field">*</span></label>
+                <input type="date" name="date_received" value="{{ entry.date_received|date:'Y-m-d'|default:form.date_received.value|default:'' }}">
+                {% if form.date_received.errors %}<span class="error-text">{{ form.date_received.errors.0 }}</span>{% endif %}
+              </div>
+
+              <div class="form-group">
+                <label>Accession Number <span class="required-field">*</span></label>
+                <input type="text" name="accession_number" value="{{ entry.accession_number|default:form.accession_number.value|default:'' }}">
+                {% if form.accession_number.errors %}<span class="error-text">{{ form.accession_number.errors.0 }}</span>{% endif %}
+              </div>
+
+              <div class="form-group">
+                <label>Call Number <span class="required-field">*</span></label>
+                <input type="text" name="call_number" value="{{ entry.call_number|default:form.call_number.value|default:'' }}">
+                {% if form.call_number.errors %}<span class="error-text">{{ form.call_number.errors.0 }}</span>{% endif %}
+              </div>
+
+              <div class="form-group">
+                <label>Author <span class="required-field">*</span></label>
+                <input type="text" name="author" value="{{ entry.author|default:form.author.value|default:'' }}">
+                {% if form.author.errors %}<span class="error-text">{{ form.author.errors.0 }}</span>{% endif %}
+              </div>
+
+              <div class="form-group">
+                <label>Title <span class="required-field">*</span></label>
+                <input type="text" name="title" value="{{ entry.title|default:form.title.value|default:'' }}">
+                {% if form.title.errors %}<span class="error-text">{{ form.title.errors.0 }}</span>{% endif %}
+              </div>
+
+              <div class="form-group">
+                <label>Edition</label>
+                <input type="text" name="edition" value="{{ entry.edition|default:form.edition.value|default:'' }}">
+              </div>
+
+              <div class="form-group">
+                <label>Volume</label>
+                <input type="text" name="volume" value="{{ entry.volume|default:form.volume.value|default:'' }}">
+              </div>
+
+              <div class="form-group">
+                <label>Pages</label>
+                <input type="text" name="pages" value="{{ entry.pages|default:form.pages.value|default:'' }}">
+              </div>
+
+              <div class="form-group">
+                <label>Dealer</label>
+                <input type="text" name="dealer" value="{{ entry.dealer|default:form.dealer.value|default:'' }}">
+              </div>
+
+              <div class="form-group">
+                <label>Price</label>
+                <input type="text" name="price" value="{{ entry.price|default:form.price.value|default:'' }}">
+              </div>
+
+              <div class="form-group">
+                <label>Place of Publication</label>
+                <input type="text" name="place_of_publication" value="{{ entry.place_of_publication|default:form.place_of_publication.value|default:'' }}">
+              </div>
+            </div>
+
+            <!-- COLUMN 2 -->
+            <div>
+              <div class="form-group">
+                <label>Publisher</label>
+                <input type="text" name="publisher" value="{{ entry.publisher|default:form.publisher.value|default:'' }}">
+              </div>
+
+              <div class="form-group">
+                <label>Year <span class="required-field">*</span></label>
+                <input type="text" name="year" value="{{ entry.year|default:form.year.value|default:'' }}">
+                {% if form.year.errors %}<span class="error-text">{{ form.year.errors.0 }}</span>{% endif %}
+              </div>
+
+              <div class="form-group">
+                <label>ISBN</label>
+                <input type="text" name="isbn" value="{{ entry.isbn|default:form.isbn.value|default:'' }}">
+              </div>
+
+              <div class="form-group">
+                <label>Budget Charge</label>
+                <input type="text" name="budget_charge" value="{{ entry.budget_charge|default:form.budget_charge.value|default:'' }}">
+              </div>
+
+              <div class="form-group">
+                <label>P.O. Number</label>
+                <input type="text" name="po_number" value="{{ entry.po_number|default:form.po_number.value|default:'' }}">
+              </div>
+
+              <div class="form-group">
+                <label>S.I. Number</label>
+                <input type="text" name="si_number" value="{{ entry.si_number|default:form.si_number.value|default:'' }}">
+              </div>
+
+              <div class="form-group">
+                <label>Recommended By</label>
+                <select name="recommended_by">
+                  <option value="">Select Recommendation</option>
+                  <option value="Director of Libraries" {% if entry.recommended_by == "Director of Libraries" or form.recommended_by.value == "Director of Libraries" %}selected{% endif %}>Director of Libraries</option>
+                  <option value="Dean" {% if entry.recommended_by == "Dean" or form.recommended_by.value == "Dean" %}selected{% endif %}>Dean</option>
+                  <option value="Principal" {% if entry.recommended_by == "Principal" or form.recommended_by.value == "Principal" %}selected{% endif %}>Principal</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Department</label>
+                <select name="department">
+                  <option value="">Select Department</option>
+                  <option value="College of Agriculture, Resources and Environmental Sciences" {% if entry.department == "College of Agriculture, Resources and Environmental Sciences" or form.department.value == "College of Agriculture, Resources and Environmental Sciences" %}selected{% endif %}>College of Agriculture, Resources and Environmental Sciences</option>
+                  <option value="College of Arts and Sciences" {% if entry.department == "College of Arts and Sciences" or form.department.value == "College of Arts and Sciences" %}selected{% endif %}>College of Arts and Sciences</option>
+                  <option value="College of Business and Accountancy" {% if entry.department == "College of Business and Accountancy" or form.department.value == "College of Business and Accountancy" %}selected{% endif %}>College of Business and Accountancy</option>
+                  <option value="College of Computer Studies" {% if entry.department == "College of Computer Studies" or form.department.value == "College of Computer Studies" %}selected{% endif %}>College of Computer Studies</option>
+                  <option value="College of Education" {% if entry.department == "College of Education" or form.department.value == "College of Education" %}selected{% endif %}>College of Education</option>
+                  <option value="College of Engineering" {% if entry.department == "College of Engineering" or form.department.value == "College of Engineering" %}selected{% endif %}>College of Engineering</option>
+                  <option value="College of Hospitality Management" {% if entry.department == "College of Hospitality Management" or form.department.value == "College of Hospitality Management" %}selected{% endif %}>College of Hospitality Management</option>
+                  <option value="College of Law" {% if entry.department == "College of Law" or form.department.value == "College of Law" %}selected{% endif %}>College of Law</option>
+                  <option value="College of Medical Laboratory Sciences" {% if entry.department == "College of Medical Laboratory Sciences" or form.department.value == "College of Medical Laboratory Sciences" %}selected{% endif %}>College of Medical Laboratory Sciences</option>
+                  <option value="College of Nursing" {% if entry.department == "College of Nursing" or form.department.value == "College of Nursing" %}selected{% endif %}>College of Nursing</option>
+                  <option value="College of Pharmacy" {% if entry.department == "College of Pharmacy" or form.department.value == "College of Pharmacy" %}selected{% endif %}>College of Pharmacy</option>
+                  <option value="College of Theology" {% if entry.department == "College of Theology" or form.department.value == "College of Theology" %}selected{% endif %}>College of Theology</option>
+                  <option value="Elementary" {% if entry.department == "Elementary" or form.department.value == "Elementary" %}selected{% endif %}>Elementary</option>
+                  <option value="Junior High School" {% if entry.department == "Junior High School" or form.department.value == "Junior High School" %}selected{% endif %}>Junior High School</option>
+                  <option value="Kindergarten" {% if entry.department == "Kindergarten" or form.department.value == "Kindergarten" %}selected{% endif %}>Kindergarten</option>
+                  <option value="School of Graduate Studies" {% if entry.department == "School of Graduate Studies" or form.department.value == "School of Graduate Studies" %}selected{% endif %}>School of Graduate Studies</option>
+                  <option value="Senior High School" {% if entry.department == "Senior High School" or form.department.value == "Senior High School" %}selected{% endif %}>Senior High School</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Section</label>
+                <select name="section">
+                  <option value="">Select Section</option>
+                  <option value="Circulation/Reserve" {% if entry.section == "Circulation/Reserve" or form.section.value == "Circulation/Reserve" %}selected{% endif %}>Circulation/Reserve</option>
+                  <option value="Elementary" {% if entry.section == "Elementary" or form.section.value == "Elementary" %}selected{% endif %}>Elementary</option>
+                  <option value="Filipiniana" {% if entry.section == "Filipiniana" or form.section.value == "Filipiniana" %}selected{% endif %}>Filipiniana</option>
+                  <option value="Graduate Studies" {% if entry.section == "Graduate Studies" or form.section.value == "Graduate Studies" %}selected{% endif %}>Graduate Studies</option>
+                  <option value="Junior High School" {% if entry.section == "Junior High School" or form.section.value == "Junior High School" %}selected{% endif %}>Junior High School</option>
+                  <option value="Kindergarten" {% if entry.section == "Kindergarten" or form.section.value == "Kindergarten" %}selected{% endif %}>Kindergarten</option>
+                  <option value="Law" {% if entry.section == "Law" or form.section.value == "Law" %}selected{% endif %}>Law</option>
+                  <option value="Reference" {% if entry.section == "Reference" or form.section.value == "Reference" %}selected{% endif %}>Reference</option>
+                  <option value="Senior High School" {% if entry.section == "Senior High School" or form.section.value == "Senior High School" %}selected{% endif %}>Senior High School</option>
+                  <option value="Theology" {% if entry.section == "Theology" or form.section.value == "Theology" %}selected{% endif %}>Theology</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Contents</label>
+                <input type="text" name="contents" value="{{ entry.contents|default:form.contents.value|default:'' }}">
+              </div>
+            </div>
+          </div>
+          
+          <div class="button-group">
+            <button type="submit" class="save-btn">
+              {% if entry %}Update{% else %}Save{% endif %}
+            </button>
+            {% if entry %}
+              <button type="button" class="clear-btn" onclick="window.history.back()">Cancel</button>
+            {% else %}
+              <button type="reset" class="clear-btn">Clear</button>
+            {% endif %}
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </main>
+  
+  <!-- FOOTER -->
+  <footer>
+    © 2026 Henry Luce III Library, All Rights Reserved
+  </footer>
+
+  <!-- PROCESSING / LOADING OVERLAY -->
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <p>Saving entry, please wait...</p>
+  </div>
+
+  <script>
+    function openSidebar() {
+      document.getElementById("sidebarMenu").style.width = "250px";
+    }
+
+    function closeSidebar() {
+      document.getElementById("sidebarMenu").style.width = "0";
+    }
+
+    // Show spinner overlay when form is submitted
+    document.addEventListener("DOMContentLoaded", function() {
+      const encodingForm = document.getElementById("encodingForm");
+      if (encodingForm) {
+        encodingForm.addEventListener("submit", function() {
+          const loadingOverlay = document.getElementById("loadingOverlay");
+          if (loadingOverlay) {
+            loadingOverlay.style.display = "flex";
+          }
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>
+
+
+
+
+
+

@@ -1,0 +1,1227 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Acquisition - Henry Luce III Library</title>
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family:'Poppins', sans-serif;
+      background:#F7F7F7;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    /* HEADER */
+    header {
+        background: #D19D1C;
+        padding: 16px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+    .logo img {
+      height: 80px;
+      width: auto;
+      margin: -15px 20px;
+    }
+
+    nav{
+      display:flex;
+      gap:35px;
+    }
+
+    nav a{
+      text-decoration:none;
+      color:#02062C;
+      font-size:1rem;
+      font-weight:500;
+      transition:0.3s;
+    }
+
+    nav a:hover{
+      opacity:0.7;
+    }
+
+    .login-btn{
+      background:#02062C;
+      color:#fff;
+      border:none;
+      padding:10px 22px;
+      border-radius:8px;
+      font-size:0.95rem;
+      font-weight:500;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    .login-btn:hover{
+      background:#0b145f;
+    }
+
+    /* MAIN */
+    main{
+      flex:1;
+      padding:20px;
+    }
+
+    .main-content-wrapper {
+      width: 90%;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .page-title{
+      font-size:1.5rem;
+      font-weight:700;
+      color:#02062C;
+      margin-bottom:15px;
+    }
+
+    /* TOOLBAR */
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      gap: 16px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      position: relative;
+      width: 400px;
+      max-width: 100%;
+    }
+
+    .search-box form {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 11px 45px 11px 15px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      outline: none;
+      background: #fff;
+      box-sizing: border-box;
+    }
+
+    .search-box i{
+      position:absolute;
+      right:10px;
+      top:50%;
+      transform:translateY(-50%);
+      color:#666;
+      padding-bottom: 0;
+    }
+
+    .action-buttons {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      width: auto;
+      margin-left: auto;
+    }
+
+    .action-buttons button,
+    .action-buttons .action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #02062C;
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+      border: none;
+      padding: 11px 18px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .action-buttons button:hover,
+    .action-buttons .action-btn:hover {
+      background: #0b145f;
+    }
+
+    /* TABLE */
+    .table-container {
+      width: 100%;
+      margin: 0 auto;
+      overflow-x: auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      min-width:1100px;
+    }
+
+    thead{
+      background:#02062C;
+      color:#fff;
+    }
+
+    th, td{
+      padding:10px 8px;
+      text-align:left;
+      border-right:1px solid #e5e5e5;
+      font-size:0.75rem;
+      line-height:1.2;
+    }
+
+    .select-cell {
+      font-size: 0.5rem;
+      text-align: center;
+      border-right: none;
+    }
+
+    .select-cell span {
+      display: block;
+    }
+
+    tbody tr:hover{
+      background:#f2f2f2;
+    }
+
+    td{
+      height: auto;
+      border-right: none;
+    }
+
+    .book-titles{
+      text-decoration: none;
+    }
+
+    /* PAGINATION */
+    .pagination {
+      margin-top: 15px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .pagination a,
+    .pagination button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #02062C;
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+      border: none;
+      padding: 11px 18px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.1s ease;
+      white-space: nowrap;
+    }
+
+    .pagination a:hover,
+    .pagination button:hover {
+      background: #0b145f;
+      color: #fff;
+    }
+
+    .pagination a:active,
+    .pagination button:active {
+      transform: scale(0.98);
+    }
+
+    .pagination .disabled {
+      background: #ccc;
+      color: #666;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .pagination span {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #02062C;
+      padding: 0 6px;
+    }
+
+    /* FOOTER */
+    footer{
+      background:#02062C;
+      color:#fff;
+      text-align:center;
+      padding:18px 15px;
+      font-size:0.95rem;
+      font-weight:400;
+    }
+
+    /* CLASSIFICATION LEGEND */
+    .classification-legend {
+      background-color: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 8px 12px;
+      max-width: 100%;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .legend-header {
+      margin-bottom: 0;
+    }
+
+    .legend-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #374151;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+
+    .legend-items {
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px 6px;
+      border-radius: 9999px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      white-space: nowrap;
+      min-width: unset;
+      text-align: center;
+    }
+
+    .legend-label {
+      font-size: 0.68rem;
+      color: #6b7280;
+    }
+
+    .badge-great {
+      background-color: #dcfce7;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+
+    .badge-partial {
+      background-color: #fef3c7;
+      color: #b45309;
+      border: 1px solid #fde68a;
+    }
+
+    .badge-mismatch {
+      background-color: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fca5a5;
+    }
+
+    /* OVERLAYS & MODALS */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 999;
+    }
+
+    .overlay-content {
+      background: #fff;
+      width: 90%;
+      max-width: 650px;
+      margin: 40px auto;
+      padding: 16px;
+      border-radius: 8px;
+      position: relative;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 8px; right: 12px;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .filter-group {
+      margin: 10px 0;
+    }
+
+    .filter-group label {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.78rem;
+    }
+
+    .checkbox-grid {
+      column-count: 2;
+      column-gap: 15px;
+    }
+
+    .checkbox-grid label {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    #sortOverlay .overlay-content {
+      max-width: 350px;
+    }
+
+    #sortOverlay select {
+      width: 100%;
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 0.85rem;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      right: 0;
+      background-color: #02062C;
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 40px;
+      z-index: 1001;
+    }
+
+
+    .sidebar a {
+      padding: 10px 0px 10px 30px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      color: #FFFFFF;
+      display: block;
+      transition: 0.2s;
+    }
+
+    .sidebar a:hover {
+      background-color: #0b145f;
+    }
+
+    .sidebar .closebtn {
+      position: absolute;
+      top: 5px;
+      right: 15px;
+      font-size: 1.5rem;
+      color: #FFFFFF;
+      cursor: pointer;
+    }
+
+    .score-high {
+      border-bottom: 2px solid green;
+    }
+
+    .score-medium {
+      border-bottom: 2px solid rgb(255, 184, 51);
+    }
+
+    .score-low {
+      border-bottom: 2px solid red;
+    }
+
+    /* Loading Overlay */
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(2, 6, 44, 0.75);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      color: #fff;
+      font-size: 0.85rem;
+    }
+
+    .spinner {
+      width: 35px;
+      height: 35px;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #D19D1C;
+      animation: spin 1s ease-in-out infinite;
+      margin-bottom: 10px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width:768px){
+      header{
+        flex-direction:column;
+        text-align:center;
+      }
+
+      nav{
+        justify-content:center;
+        flex-wrap:wrap;
+        gap:12px;
+      }
+
+      .toolbar{
+        flex-direction:column;
+        align-items:stretch;
+      }
+
+      .search-box{
+        width:100%;
+        max-width:100%;
+      }
+
+      .action-buttons{
+        width:100%;
+      }
+
+      .action-buttons button, .action-btn{
+        flex:1;
+      }
+
+      main{
+        padding:15px 10px;
+      }
+
+      .classification-legend {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+
+      .legend-items {
+        flex-wrap: wrap;
+      }
+    }
+
+    @media (max-width:480px){
+      nav{
+        flex-direction:column;
+        gap:8px;
+      }
+
+      .page-title{
+        font-size:1.1rem;
+      }
+
+      footer{
+        font-size:0.75rem;
+      }
+    }
+  </style>
+</head>
+
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+
+    <div class="logo">
+      <img src="{% static 'css/images/henryluce.png' %}" alt="Library Logo">
+    </div>
+
+
+    <nav>
+      {% if user.is_authenticated %}
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'acquisition' %}">Search Records</a>
+        {% if is_librarian %}
+        <a href="{% url 'acquisition_batch' %}">Syllabus Match</a>
+        {% endif %}
+        {% if is_librarian %}
+        <a href="{% url 'encoding' %}">Encoding</a>
+        {% endif %}
+      {% endif %}
+    </nav>
+
+    {% if user.is_authenticated %}
+      <button class="login-btn" onclick="openSidebar()">
+        {{ user.username }}
+      </button>
+    {% else %}
+      <a href="{% url 'login' %}" class="login-btn">Login</a>
+    {% endif %}
+
+    {% if auto_departments %}
+      <div class="auto-filter-banner">
+        Showing results for {{ auto_departments|join:", " }} department(s).
+      </div>
+    {% endif %}
+
+
+  </header>
+
+  <div id="sidebarMenu" class="sidebar">
+    <span class="closebtn" onclick="closeSidebar()">&times;</span>
+    <a href="{% url 'profile' %}">Profile</a>
+    <a href="{% url 'logout' %}">Logout</a>
+  </div>
+
+  <!-- MAIN -->
+  <main>
+
+    <div class="main-content-wrapper">
+      <h2 class="page-title">Search Book Records</h2>  
+
+      <div class="classification-legend">
+        <div class="legend-header">
+          <span class="legend-title">Match Accuracy Legend</span>
+        </div>
+        
+        <div class="legend-items">
+          <div class="legend-item">
+            <span class="legend-badge badge-great">High</span>
+            <span class="legend-label">High similarity score >= 0.7</span>
+          </div>
+
+          <div class="legend-item">
+            <span class="legend-badge badge-partial">Partial</span>
+            <span class="legend-label">Moderate similarity score >= 0.4</span>
+          </div>
+
+          <div class="legend-item">
+            <span class="legend-badge badge-mismatch">Low</span>
+            <span class="legend-label">Low similarity score &lt; 0.4</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOOLBAR -->
+      <div class="toolbar">
+        
+        <div class="search-box">
+          <form method="get" action="{% url 'acquisition' %}" id="searchForm">
+            <input type="hidden" name="sort_field" value="{{ sort_field }}">
+            <input type="hidden" name="sort_order" value="{{ sort_order }}">
+            <input type="text" name="q" placeholder="Search records..." value="{{ request.GET.q }}">
+            <button type="submit"><i class="fas fa-search"></i></button>
+          </form>
+        </div>
+          
+
+        <div class="action-buttons">
+          <button type="button" id="searchBtn">Search</button>
+          <!-- <a href="{% url 'acquisition_import' %}" class="action-btn">Upload List</a> -->
+          <button type="button" id="filterBtn">Filter</button>
+          <button type="button" id="sortBtn">Sort by</button>
+
+          <!-- Connect the button to the form using the 'form' attribute -->
+          <button type="submit" form="bib-form" class="action-btn">Generate Bibliography</button>
+
+          <!-- <a href="{% url 'summary' %}" class="action-btn">Generate Summary</a> -->
+          <!-- <a href="{% url 'algorithm' %}?q={{ request.GET.q|urlencode }}&mode=jaccard_sbert" class="action-btn">Algorithm Results</a> -->
+        </div>
+
+      </div>
+
+      <!-- Main Form wraps the results outside of action-buttons -->
+      <form action="{% url 'generate_bibliography' %}" method="POST" id="bib-form">
+        {% csrf_token %}
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th class="select-cell">
+                  <input type="checkbox" id="select-all"> All</th>
+                <th>Accession Number</th>
+                <th>Call Number</th>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Edition</th>
+                <th>Volume</th>
+                <th>Publisher</th>
+                <th>Year</th>
+                <th>ISBN</th>
+                <th>Department</th>
+                <!-- <th>Jaccard</th> -->
+                <!-- <th>SBERT</th> -->
+                <!-- <th>Score</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in page_obj %}
+                {% with entry=item.entry jaccard=item.jaccard|default:0.0 sbert=item.sbert|default:0.0 score=item.jaccard_sbert|default:0.0 %}
+                  <tr>
+                    <td class="select-cell"><input type="checkbox" name="selected_entries" value="{{ entry.id }}"></td>
+                    <td>{{ entry.accession_number }}</td>
+                    <td>{{ entry.call_number }}</td>
+                    <td>{{ entry.author }}</td>
+                    <td>
+                      <a href="{% url 'full_details' entry.id %}" 
+                        class="book-titles {% if score >= 0.65 %}score-high{% elif score >= 0.3 %}score-medium{% elif score > 0 %}score-low{% endif %}">
+                        {{ entry.title }}
+                      </a>
+                    </td>
+                    <td>{{ entry.edition }}</td>
+                    <td>{{ entry.volume }}</td>
+                    <td>{{ entry.publisher }}</td>
+                    <td>{{ entry.year }}</td>
+                    <td>{{ entry.isbn }}</td>
+                    <td>{{ entry.department }}</td>
+                    <!-- <td style="color: #4b5563;">{{ jaccard|floatformat:2 }}</td> -->
+                    <!-- <td style="color: #4b5563;">{{ sbert|floatformat:2 }}</td> -->
+                    <!-- <td>
+                      <span class="{% if score >= 0.65 %}score-high{% elif score >= 0.3 %}score-medium{% else %}score-low{% endif %}" style="font-weight: 600;">
+                        {{ score|floatformat:2 }}
+                      </span>
+                    </td> -->
+                  </tr>
+                {% endwith %}
+              {% empty %}
+                <tr><td colspan="14" style="text-align: center;">No records found.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </form>
+
+
+      <!-- PAGINATION -->
+      <div class="pagination">
+        {% if page_obj.has_previous %}
+          <a href="?page={{ page_obj.previous_page_number }}&sort_field={{ request.GET.sort_field }}&sort_order={{ request.GET.sort_order }}&{% for key, values in request.GET.lists %}{% if key != 'page' and key != 'sort_field' and key != 'sort_order' %}{% for v in values %}{{ key }}={{ v|urlencode }}&{% endfor %}{% endif %}{% endfor %}">Previous</a>
+        {% endif %}
+
+        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}&sort_field={{ request.GET.sort_field }}&sort_order={{ request.GET.sort_order }}&{% for key, values in request.GET.lists %}{% if key != 'page' and key != 'sort_field' and key != 'sort_order' %}{% for v in values %}{{ key }}={{ v|urlencode }}&{% endfor %}{% endif %}{% endfor %}">Next</a>
+        {% endif %}
+      </div>
+
+      <br>
+      <section>
+      <!-- <div>
+            <p>
+              Once a user has logged in, this page will show a data grid of the list of encoded book details. Only logged in users can access this page. Book details displayed will depend on which user has logged in. 
+              For example, if the user is a Liaison librarian of CCS, only book details encoded for CCS are shown. The Search box at the top allows the user to search for a specific record.
+            </p>
+
+          </div> -->
+      </section>
+
+    </div>
+   
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    © 2026 Henry Luce III Library, All Rights Reserved
+  </footer>
+
+
+  <!-- Filter Overlay -->
+  <div id="filterOverlay" class="overlay">
+    <div class="overlay-content">
+      <span class="close-btn" id="closeOverlay">&times;</span>
+      <h3>Filter Options</h3>
+      <form method="get" action="{% url 'acquisition' %}" id="filterForm">
+
+        <!-- Preserve search query and sort state -->
+        <input type="hidden" name="q" value="{{ query }}">
+        <input type="hidden" name="sort_field" value="{{ sort_field }}">
+        <input type="hidden" name="sort_order" value="{{ sort_order }}">
+
+        <!-- Department -->
+        <div class="form-grid">
+          <div class="filter-group">
+            <h4>Department</h4>
+            <div class="checkbox-grid">
+              <label><input type="checkbox" name="department" value="College of Agriculture, Resources and Environmental Sciences" {% if "College of Agriculture, Resources and Environmental Sciences" in selected_departments %}checked{% endif %}> College of Agriculture, Resources and Environmental Sciences</label>
+              <label><input type="checkbox" name="department" value="College of Arts and Sciences" {% if "College of Arts and Sciences" in selected_departments %}checked{% endif %}> College of Arts and Sciences</label>
+              <label><input type="checkbox" name="department" value="College of Business and Accountancy" {% if "College of Business and Accountancy" in selected_departments %}checked{% endif %}> College of Business and Accountancy</label>
+              <label><input type="checkbox" name="department" value="College of Computer Studies" {% if "College of Computer Studies" in selected_departments %}checked{% endif %}> College of Computer Studies</label>
+              <label><input type="checkbox" name="department" value="College of Education" {% if "College of Education" in selected_departments %}checked{% endif %}> College of Education</label>
+              <label><input type="checkbox" name="department" value="College of Engineering" {% if "College of Engineering" in selected_departments %}checked{% endif %}> College of Engineering</label>
+              <label><input type="checkbox" name="department" value="College of Hospitality Management" {% if "College of Hospitality Management" in selected_departments %}checked{% endif %}> College of Hospitality Management</label>
+              <label><input type="checkbox" name="department" value="College of Law" {% if "College of Law" in selected_departments %}checked{% endif %}> College of Law</label>
+              <label><input type="checkbox" name="department" value="College of Medical Laboratory Sciences" {% if "College of Medical Laboratory Sciences" in selected_departments %}checked{% endif %}> College of Medical Laboratory Sciences</label>
+              <label><input type="checkbox" name="department" value="College of Nursing" {% if "College of Nursing" in selected_departments %}checked{% endif %}> College of Nursing</label>
+              <label><input type="checkbox" name="department" value="College of Pharmacy" {% if "College of Pharmacy" in selected_departments %}checked{% endif %}> College of Pharmacy</label>
+              <label><input type="checkbox" name="department" value="College of Theology" {% if "College of Theology" in selected_departments %}checked{% endif %}> College of Theology</label>
+              <label><input type="checkbox" name="department" value="Elementary" {% if "Elementary" in selected_departments %}checked{% endif %}> Elementary</label>
+              <label><input type="checkbox" name="department" value="Junior High School" {% if "Junior High School" in selected_departments %}checked{% endif %}> Junior High School</label>
+              <label><input type="checkbox" name="department" value="Kindergarten" {% if "Kindergarten" in selected_departments %}checked{% endif %}> Kindergarten</label>
+              <label><input type="checkbox" name="department" value="School of Graduate Studies" {% if "School of Graduate Studies" in selected_departments %}checked{% endif %}> School of Graduate Studies</label>
+              <label><input type="checkbox" name="department" value="Senior High School" {% if "Senior High School" in selected_departments %}checked{% endif %}> Senior High School</label>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Section -->
+        <div class="form-grid">
+          <div class="filter-group">
+            <h4>Section</h4>
+            <div class="checkbox-grid">
+              <label><input type="checkbox" name="section" value="Circulation/Reserve" {% if "Circulation/Reserve" in selected_sections %}checked{% endif %}> Circulation/Reserve</label>
+              <label><input type="checkbox" name="section" value="Elementary" {% if "Elementary" in selected_sections %}checked{% endif %}> Elementary</label>
+              <label><input type="checkbox" name="section" value="Filipiniana" {% if "Filipiniana" in selected_sections %}checked{% endif %}> Filipiniana</label>
+              <label><input type="checkbox" name="section" value="Graduate Studies" {% if "Graduate Studies" in selected_sections %}checked{% endif %}> Graduate Studies</label>
+              <label><input type="checkbox" name="section" value="Junior High School" {% if "Junior High School" in selected_sections %}checked{% endif %}> Junior High School</label>
+              <label><input type="checkbox" name="section" value="Kindergarten" {% if "Kindergarten" in selected_sections %}checked{% endif %}> Kindergarten</label>
+              <label><input type="checkbox" name="section" value="Law" {% if "Law" in selected_sections %}checked{% endif %}> Law</label>
+              <label><input type="checkbox" name="section" value="Reference" {% if "Reference" in selected_sections %}checked{% endif %}> Reference</label>
+              <label><input type="checkbox" name="section" value="Senior High School" {% if "Senior High School" in selected_sections %}checked{% endif %}> Senior High School</label>
+              <label><input type="checkbox" name="section" value="Theology" {% if "Theology" in selected_sections %}checked{% endif %}> Theology</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recommended By -->
+        <div class="form-grid">
+          <div class="filter-group">
+            <h4>Recommended By</h4>
+            <div class="checkbox-grid">
+              <label><input type="checkbox" name="recommended_by" value="Director of Libraries" {% if "Director of Libraries" in selected_recommended_bys %}checked{% endif %}> Director of Libraries</label>
+              <label><input type="checkbox" name="recommended_by" value="Dean" {% if "Dean" in selected_recommended_bys %}checked{% endif %}> Dean</label>
+              <label><input type="checkbox" name="recommended_by" value="Principal" {% if "Principal" in selected_recommended_bys %}checked{% endif %}> Principal</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Year -->
+        <div class="form-grid">
+          <div class="filter-group">
+            <h4>Year</h4>
+            <div class="checkbox-grid">
+              <label><input type="checkbox" name="year" value="2020" {% if "2020" in selected_years %}checked{% endif %}> 2020</label>
+              <label><input type="checkbox" name="year" value="2021" {% if "2021" in selected_years %}checked{% endif %}> 2021</label>
+              <label><input type="checkbox" name="year" value="2022" {% if "2022" in selected_years %}checked{% endif %}> 2022</label>
+              <label><input type="checkbox" name="year" value="2023" {% if "2023" in selected_years %}checked{% endif %}> 2023</label>
+              <label><input type="checkbox" name="year" value="2024" {% if "2024" in selected_years %}checked{% endif %}> 2024</label>
+              <label><input type="checkbox" name="year" value="2025" {% if "2025" in selected_years %}checked{% endif %}> 2025</label>
+              <label><input type="checkbox" name="year" value="2026" {% if "2026" in selected_years %}checked{% endif %}> 2026</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <button type="submit">Apply Filters</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+  <!-- Sort Overlay -->
+  <div id="sortOverlay" class="overlay">
+    <div class="overlay-content">
+      <span class="close-btn" id="closeSort">&times;</span>
+      <h3>Sort Options</h3>
+      <form method="get" action="{% url 'acquisition' %}" id="sortForm">
+
+        <!-- Field Selection -->
+        <div class="filter-group">
+          <h4>Sort Field</h4>
+          <select name="sort_field">
+            <option value="accession_number" {% if sort_field == "accession_number" %}selected{% endif %}>Accession Number</option>
+            <option value="title" {% if sort_field == "title" %}selected{% endif %}>Title</option>
+            <option value="author" {% if sort_field == "author" %}selected{% endif %}>Author</option>
+            <option value="year" {% if sort_field == "year" %}selected{% endif %}>Year</option>
+            <!-- <option value="price" {% if sort_field == "price" %}selected{% endif %}>Price</option> -->
+            <!-- <option value="budget_charge" {% if sort_field == "budget_charge" %}selected{% endif %}>Budget Charge</option> -->
+          </select>
+        </div> <!-- Added Missing Closing Div Here -->
+
+        <!-- Order Selection -->
+        <div class="filter-group">
+          <h4>Order</h4>
+          <label><input type="radio" name="sort_order" value="asc" {% if request.GET.sort_order != "desc" %}checked{% endif %}> Ascending</label>
+          <label><input type="radio" name="sort_order" value="desc" {% if request.GET.sort_order == "desc" %}checked{% endif %}> Descending</label>
+        </div>
+
+        <div class="action-buttons">
+          <button type="submit">Apply Sorting</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Processing Overlay Modal HTML -->
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <p>Processing request, please wait...</p>
+  </div>
+
+
+  <!-- Processing Modal Script -->
+  <script>
+    function showLoading() {
+      const loadingOverlay = document.getElementById("loadingOverlay");
+      if (loadingOverlay) {
+        loadingOverlay.style.display = "flex";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      // Show spinner when any form submits
+      const formsToTrack = document.querySelectorAll("form");
+      formsToTrack.forEach(form => {
+        form.addEventListener("submit", showLoading);
+      });
+
+      // Show spinner when clicking pagination links
+      const paginationLinks = document.querySelectorAll(".pagination a");
+      paginationLinks.forEach(link => {
+        link.addEventListener("click", showLoading);
+      });
+    });
+
+  </script>
+
+
+
+  <!-- Search Script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const searchBtn = document.getElementById("searchBtn");
+      const searchForm = document.getElementById("searchForm");
+
+      function submitSearch() {
+        const searchInput = searchForm ? searchForm.querySelector("input[name='q']") : null;
+        const params = new URLSearchParams(window.location.search);
+        params.set("q", searchInput ? searchInput.value || "" : "");
+        params.set("page", "1");
+        
+        showLoading(); // Forces the overlay to open before redirecting
+        window.location.href = window.location.pathname + "?" + params.toString();
+      }
+
+      if (searchBtn) {
+        searchBtn.addEventListener("click", function(e) {
+          e.preventDefault();
+          submitSearch();
+        });
+      }
+
+      if (searchForm) {
+        searchForm.addEventListener("submit", function(e) {
+          e.preventDefault();
+          submitSearch();
+        });
+      }
+    });
+  </script>
+
+
+
+  <!-- Filter Overlay Script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const filterBtn = document.getElementById("filterBtn");
+      const overlay = document.getElementById("filterOverlay");
+      const closeBtn = document.getElementById("closeOverlay");
+      const filterForm = document.getElementById("filterForm");
+
+      if (filterBtn) {
+        filterBtn.addEventListener("click", function(e) {
+          e.preventDefault();
+          overlay.style.display = "block";
+        });
+      }
+
+      if (closeBtn) {
+        closeBtn.addEventListener("click", function() {
+          overlay.style.display = "none";
+        });
+      }
+
+      window.addEventListener("click", function(e) {
+        if (e.target === overlay) {
+          overlay.style.display = "none";
+        }
+      });
+
+      if (filterForm) {
+        filterForm.addEventListener("submit", function(e) {
+          e.preventDefault();
+          
+          const newParams = new URLSearchParams(window.location.search);
+          
+          newParams.delete("department");
+          newParams.delete("section");
+          newParams.delete("recommended_by");
+          newParams.delete("year");
+
+          const formData = new FormData(filterForm);
+          for (const [key, value] of formData.entries()) {
+            if (value.trim() !== "" && key !== "q" && key !== "sort_field" && key !== "sort_order") {
+              newParams.append(key, value);
+            }
+          }
+
+          newParams.set("page", "1");
+
+          showLoading(); // Forces the overlay to open before redirecting
+          window.location.href = window.location.pathname + "?" + newParams.toString();
+        });
+      }
+    });
+  </script>
+
+
+
+  <!-- Sort Overlay Script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const sortBtn = document.getElementById("sortBtn");
+      const sortOverlay = document.getElementById("sortOverlay");
+      const closeSort = document.getElementById("closeSort");
+      const sortForm = document.getElementById("sortForm");
+
+      if (sortBtn) {
+        sortBtn.addEventListener("click", function(e) {
+          e.preventDefault();
+          sortOverlay.style.display = "block";
+        });
+      }
+
+      if (closeSort) {
+        closeSort.addEventListener("click", function() {
+          sortOverlay.style.display = "none";
+        });
+      }
+
+      window.addEventListener("click", function(e) {
+        if (e.target === sortOverlay) {
+          sortOverlay.style.display = "none";
+        }
+      });
+
+      if (sortForm) {
+        sortForm.addEventListener("submit", function(e) {
+          e.preventDefault();
+          const currentParams = new URLSearchParams(window.location.search);
+          const sortField = sortForm.querySelector("select[name='sort_field']").value;
+          const checkedOrder = sortForm.querySelector("input[name='sort_order']:checked");
+          const sortOrder = checkedOrder ? checkedOrder.value : "asc";
+
+          currentParams.set("sort_field", sortField);
+          currentParams.set("sort_order", sortOrder);
+          currentParams.set("page", "1");
+
+          showLoading(); // Forces the overlay to open before redirecting
+          window.location.href = window.location.pathname + "?" + currentParams.toString();
+        });
+      }
+    });
+  </script>
+
+
+
+
+  <!-- Sidebar Navigation Controls -->
+  <script>
+    function openSidebar() {
+      document.getElementById("sidebarMenu").style.width = "250px";
+    }
+
+    function closeSidebar() {
+      document.getElementById("sidebarMenu").style.width = "0";
+    }
+  </script>
+
+
+
+  <!-- Bibliography Selection & Form Validation (Cross-Page Persistent) -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const STORAGE_KEY = "selected_bib_entries";
+      const selectAll = document.getElementById("select-all");
+      const bibForm = document.getElementById("bib-form");
+
+      function getStoredIds() {
+        try {
+          const raw = sessionStorage.getItem(STORAGE_KEY);
+          return new Set(raw ? JSON.parse(raw) : []);
+        } catch (e) {
+          return new Set();
+        }
+      }
+
+      function saveStoredIds(idSet) {
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(idSet)));
+      }
+
+      const pageCheckboxes = document.querySelectorAll("input[name='selected_entries']");
+      const storedIds = getStoredIds();
+
+      let allOnPageChecked = pageCheckboxes.length > 0;
+      pageCheckboxes.forEach(cb => {
+        if (storedIds.has(cb.value)) {
+          cb.checked = true;
+        } else {
+          allOnPageChecked = false;
+        }
+
+        cb.addEventListener("change", function(e) {
+          const ids = getStoredIds();
+          if (e.target.checked) {
+            ids.add(e.target.value);
+          } else {
+            ids.delete(e.target.value);
+          }
+          saveStoredIds(ids);
+
+          if (selectAll) {
+            const checkedOnPage = document.querySelectorAll("input[name='selected_entries']:checked").length;
+            selectAll.checked = (checkedOnPage === pageCheckboxes.length && pageCheckboxes.length > 0);
+          }
+        });
+      });
+
+      if (selectAll && pageCheckboxes.length > 0) {
+        selectAll.checked = allOnPageChecked;
+
+        selectAll.addEventListener("change", function() {
+          const ids = getStoredIds();
+          pageCheckboxes.forEach(cb => {
+            cb.checked = selectAll.checked;
+            if (selectAll.checked) {
+              ids.add(cb.value);
+            } else {
+              ids.delete(cb.value);
+            }
+          });
+          saveStoredIds(ids);
+        });
+      }
+
+      if (bibForm) {
+        bibForm.addEventListener("submit", function(e) {
+          const ids = getStoredIds();
+
+          if (ids.size === 0) {
+            e.preventDefault();
+            alert("Please select at least one entry to generate a bibliography.");
+            return;
+          }
+
+          showLoading(); // Show overlay while generating bibliography
+
+          const existingInjected = bibForm.querySelectorAll(".injected-selected-id");
+          existingInjected.forEach(el => el.remove());
+
+          pageCheckboxes.forEach(cb => {
+            cb.disabled = true;
+          });
+
+          ids.forEach(id => {
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.className = "injected-selected-id";
+            input.name = "selected_entries";
+            input.value = id;
+            bibForm.appendChild(input);
+          });
+
+          setTimeout(() => {
+            pageCheckboxes.forEach(cb => {
+              cb.disabled = false;
+            });
+          }, 1000);
+        });
+      }
+    });
+  </script>
+
+
+  <!-- REFRESH / RELOAD Page -->
+  <script>
+    (function() {
+      const STORAGE_KEY = "selected_bib_entries";
+
+      const perfEntries = performance.getEntriesByType("navigation");
+      const isReload = (perfEntries.length > 0 && perfEntries[0].type === "reload") || 
+                      (window.performance && window.performance.navigation && window.performance.navigation.type === 1);
+
+      if (isReload) {
+        sessionStorage.removeItem(STORAGE_KEY);
+        if (window.location.search) {
+          window.location.href = window.location.pathname;
+          return;
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", function() {
+        const navLinks = document.querySelectorAll("header nav a");
+        navLinks.forEach(link => {
+          link.addEventListener("click", function() {
+            sessionStorage.removeItem(STORAGE_KEY);
+          });
+        });
+      });
+    })();
+  </script>
+  
+
+
+
+</body>
+</html>
+

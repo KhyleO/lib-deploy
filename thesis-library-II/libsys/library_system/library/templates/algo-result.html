@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Algorithm Results</title>
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+  <style>
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .back-btn {
+      display: inline-block !important; /* override inline-flex */
+      margin-bottom: 0 !important;      /* override spacing */
+      font-size: 1.2rem;
+      color: #02062C;
+      text-decoration: none;
+    }
+
+    .header h1 {
+      flex: 1;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #02062C;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      margin-top: 25px;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      background: #fff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 800px;
+    }
+
+    thead {
+      background: #02062C;
+      color: #fff;
+      font-size: 0.8rem;
+    }
+
+    th, td {
+      padding: 10px 12px;
+      text-align: left;
+      font-size: 0.7rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    tbody tr {
+      transition: background 0.2s ease;
+    }
+
+    tbody tr:hover {
+      background: #f9f9f9;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #fafafa;
+    }
+
+    .empty {
+      padding: 20px;
+      background: #fff4e5;
+      border: 1px solid #ffd7a6;
+      border-radius: 8px;
+      margin-top: 20px;
+      text-align: center;
+      color: #cc7a00;
+      font-weight: 500;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <a href="{% url 'acquisition' %}{% if query %}?q={{ query|urlencode }}{% endif %}" class="back-btn">
+        <i class="fas fa-arrow-left"></i>
+      </a>
+      <h1>Algorithm Search Results</h1>
+    </div>
+
+
+
+    {% if query %}
+      <p class="query-info">Showing results for: <strong>{{ query }}</strong></p>
+    {% else %}
+      <p class="query-info">No query provided yet. Enter a search term above to see algorithm results.</p>
+    {% endif %}
+
+    {% if results %}
+      <div class="table-wrapper">
+        <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Edition</th>
+            <th>Volume</th>
+            <th>Department</th>
+            <th>Section</th>
+            <th>Recommended By</th>
+            <th>Contents</th>
+            <th>Jaccard Score</th>
+            <th>SBERT Score</th>
+            <th>Hybrid Score (0.6 / 0.4)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for entry, jaccard, sbert, jaccard_sbert in results %}
+            <tr>
+              <td>{{ entry.title }}</td>
+              <td>{{ entry.author }}</td>
+              <td>{{ entry.edition }}</td>
+              <td>{{ entry.volume }}</td>
+              <td>{{ entry.department }}</td>
+              <td>{{ entry.section }}</td>
+              <td>{{ entry.recommended_by }}</td>
+              <td>{{ entry.contents }}</td>
+              <td>{{ jaccard|floatformat:3 }}</td>
+              <td>{{ sbert|floatformat:3 }}</td>
+              <td>{{ jaccard_sbert|floatformat:3 }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+        </table>
+      </div>
+
+    {% else %}
+      <div class="empty">No matching algorithm results were found for this search.</div>
+    {% endif %}
+  </div>
+</body>
+
+</html>

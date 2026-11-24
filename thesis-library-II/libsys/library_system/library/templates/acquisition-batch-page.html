@@ -1,0 +1,1159 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Syllabus Match - Henry Luce III Library</title>
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family:'Poppins', sans-serif;
+      background:#F7F7F7;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    /* HEADER */
+    header {
+        background: #D19D1C;
+        padding: 16px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+    .logo img {
+      height: 80px;
+      width: auto;
+      margin: -15px 20px;
+    }
+
+    nav{
+      display:flex;
+      gap:35px;
+    }
+
+    nav a{
+      text-decoration:none;
+      color:#02062C;
+      font-size:1rem;
+      font-weight:500;
+      transition:0.3s;
+    }
+
+    nav a:hover{
+      opacity:0.7;
+    }
+
+    .login-btn{
+      background:#02062C;
+      color:#fff;
+      border:none;
+      padding:10px 22px;
+      border-radius:8px;
+      font-size:0.95rem;
+      font-weight:500;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    .login-btn:hover{
+      background:#0b145f;
+    }
+
+    /* MAIN */
+    main{
+      flex:1;
+      padding:20px;
+    }
+
+    .main-content-wrapper {
+      width: 90%;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .page-title{
+      font-size:1.5rem;
+      font-weight:700;
+      color:#02062C;
+      margin-bottom:15px;
+    }
+
+    /* TOOLBAR */
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      gap: 16px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .action-buttons {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      width: auto;
+      margin-left: auto;
+    }
+
+    .action-buttons button,
+    .action-buttons .action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #02062C;
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+      border: none;
+      padding: 11px 18px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .action-buttons button:hover,
+    .action-buttons .action-btn:hover {
+      background: #0b145f;
+    }
+
+    /* ACCORDION & TABLE STYLES */
+    .course-section {
+      margin-bottom: 18px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+      background: #fff;
+    }
+
+    .accordion-header {
+      background: #e9ecef;
+      padding: 12px 16px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #02062C;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s ease;
+    }
+
+    .accordion-header:hover {
+      background: #dee2e6;
+    }
+
+    .accordion-header-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .table-actions {
+      display: flex;
+      gap: 8px;
+      margin-left: auto;
+      margin-right: 15px;
+    }
+
+    .table-actions .action-btn,
+    .table-actions button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #02062C;
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+      border: none;
+      padding: 11px 18px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+      text-decoration: none;
+      white-space: nowrap;
+      gap: 6px;
+    }
+
+    .table-actions .action-btn:hover,
+    .table-actions button:hover {
+      background: #0b145f;
+}
+
+    .badge-count {
+      background: #02062C;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+
+    .accordion-icon {
+      font-size: 0.9rem;
+      transition: transform 0.3s ease;
+      color: #02062C;
+    }
+
+    .accordion-content {
+      display: block;
+    }
+
+    .course-section.collapsed .accordion-content {
+      display: none;
+    }
+
+    .course-section.collapsed .accordion-icon {
+      transform: rotate(-90deg);
+    }
+
+    tr.extra-row {
+      display: none;
+    }
+
+    /* SHOW MORE / LESS */
+    .toggle-rows-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px 16px;
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+    }
+
+    .btn-toggle-rows {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: transparent;
+      color: #02062c;
+      border: 1px solid #cbd5e1;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-toggle-rows:hover {
+      background: #02062c;
+      color: #ffffff;
+      border-color: #02062c;
+    }
+
+    .btn-toggle-rows i {
+      font-size: 0.75rem;
+      transition: transform 0.2s ease;
+    }
+
+    .btn-toggle-rows .count-pill {
+      background: #e2e8f0;
+      color: #334155;
+      font-size: 0.7rem;
+      padding: 1px 7px;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-toggle-rows:hover .count-pill {
+      background: #ffffff;
+      color: #02062c;
+    }
+
+    /* TABLE */
+    .table-container {
+      width: 100%;
+      margin: 0 auto;
+      overflow-x: auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      min-width:1100px;
+    }
+
+    thead{
+      background:#02062C;
+      color:#fff;
+    }
+
+    th, td{
+      padding:10px 8px;
+      text-align:left;
+      border-right:1px solid #e5e5e5;
+      font-size:0.75rem;
+      line-height:1.2;
+    }
+
+    .select-cell {
+      font-size: 0.5rem;
+      text-align: center;
+      border-right: none;
+    }
+
+    tbody tr:hover{
+      background:#f2f2f2;
+    }
+
+    td{
+      height: auto;
+      border-right: none;
+    }
+
+    .book-titles{
+      text-decoration: none;
+    }
+
+    /* FOOTER */
+    footer{
+      background:#02062C;
+      color:#fff;
+      text-align:center;
+      padding:18px 15px;
+      font-size:0.95rem;
+      font-weight:400;
+    }
+
+    /* CLASSIFICATION LEGEND */
+    .classification-legend {
+      background-color: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 8px 12px;
+      max-width: 100%;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .legend-header {
+      margin-bottom: 0;
+    }
+
+    .legend-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #374151;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+
+    .legend-items {
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px 6px;
+      border-radius: 9999px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      white-space: nowrap;
+      min-width: unset;
+      text-align: center;
+    }
+
+    .legend-label {
+      font-size: 0.68rem;
+      color: #6b7280;
+    }
+
+    .badge-great {
+      background-color: #dcfce7;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+
+    .badge-partial {
+      background-color: #fef3c7;
+      color: #b45309;
+      border: 1px solid #fde68a;
+    }
+
+    .badge-mismatch {
+      background-color: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fca5a5;
+    }
+
+    /* OVERLAYS & MODALS */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 999;
+    }
+
+    .overlay-content {
+      background: #fff;
+      width: 90%;
+      max-width: 650px;
+      margin: 40px auto;
+      padding: 16px;
+      border-radius: 8px;
+      position: relative;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 8px; right: 12px;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .filter-group {
+      margin: 10px 0;
+    }
+
+    .filter-group label {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.78rem;
+    }
+
+    .checkbox-grid {
+      column-count: 2;
+      column-gap: 15px;
+    }
+
+    .checkbox-grid label {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    #sortOverlay .overlay-content {
+      max-width: 350px;
+    }
+
+    #sortOverlay select {
+      width: 100%;
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 0.85rem;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      right: 0;
+      background-color: #02062C;
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 40px;
+      z-index: 1001;
+    }
+
+
+    .sidebar a {
+      padding: 10px 0px 10px 30px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      color: #FFFFFF;
+      display: block;
+      transition: 0.2s;
+    }
+
+    .sidebar a:hover {
+      background-color: #0b145f;
+    }
+
+    .sidebar .closebtn {
+      position: absolute;
+      top: 5px;
+      right: 15px;
+      font-size: 1.5rem;
+      color: #FFFFFF;
+      cursor: pointer;
+    }
+
+    .score-high {
+      border-bottom: 2px solid green;
+    }
+
+    .score-medium {
+      border-bottom: 2px solid rgb(255, 184, 51);
+    }
+
+    .score-low {
+      border-bottom: 2px solid red;
+    }
+
+    /* Loading Overlay */
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(2, 6, 44, 0.75);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      color: #fff;
+      font-size: 0.85rem;
+    }
+
+    .spinner {
+      width: 35px;
+      height: 35px;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #D19D1C;
+      animation: spin 1s ease-in-out infinite;
+      margin-bottom: 10px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <img src="{% static 'css/images/henryluce.png' %}" alt="Library Logo">
+    </div>
+
+    <nav>
+      {% if user.is_authenticated %}
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'acquisition' %}">Search Records</a>
+        {% if is_librarian %}
+        <a href="{% url 'acquisition_batch' %}">Syllabus Match</a>
+        <a href="{% url 'encoding' %}">Encoding</a>
+        {% endif %}
+      {% endif %}
+    </nav>
+
+    {% if user.is_authenticated %}
+      <button class="login-btn" onclick="openSidebar()">
+        {{ user.username }}
+      </button>
+    {% else %}
+      <a href="{% url 'login' %}" class="login-btn">Login</a>
+    {% endif %}
+  </header>
+
+  <div id="sidebarMenu" class="sidebar">
+    <span class="closebtn" onclick="closeSidebar()">&times;</span>
+    <a href="{% url 'profile' %}">Profile</a>
+    <a href="{% url 'logout' %}">Logout</a>
+  </div>
+
+  <!-- MAIN -->
+  <main>
+    <div class="main-content-wrapper">
+      <h2 class="page-title">Upload Course List</h2> 
+
+      <div class="classification-legend">
+        <div class="legend-header">
+          <span class="legend-title">Match Accuracy Legend</span>
+        </div>
+        
+        <div class="legend-items">
+          <div class="legend-item">
+            <span class="legend-badge badge-great">High</span>
+            <span class="legend-label">High similarity score >= 0.7</span>
+          </div>
+
+          <div class="legend-item">
+            <span class="legend-badge badge-partial">Partial</span>
+            <span class="legend-label">Moderate similarity score >= 0.4</span>
+          </div>
+
+          <div class="legend-item">
+            <span class="legend-badge badge-mismatch">Low</span>
+            <span class="legend-label">Low similarity score &lt; 0.4</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOOLBAR (Global Actions Only) -->
+      <div class="toolbar">
+        <div class="action-buttons">
+          <a href="{% url 'acquisition_import' %}" class="action-btn">Upload List</a>
+          <button type="submit" form="bib-form" class="action-btn">Generate Bibliography</button>
+        </div>
+      </div>
+
+      <!-- Main Form wraps batch results -->
+      <form action="{% url 'generate_bibliography' %}" method="POST" id="bib-form">
+        {% csrf_token %}
+
+        {% for course in results %}
+          <div class="course-section" data-course-id="{{ forloop.counter }}">
+            <div class="accordion-header">
+              <div class="accordion-header-info">
+                <span>{{ course.course_code }} - {{ course.course_title }}</span>
+                {% if course.year_level %}
+                  <span style="font-size:0.85rem; font-weight:normal; color:#4b5563;">({{ course.year_level }} - {{ course.semester }})</span>
+                {% endif %}
+                <span class="badge-count">{{ course.matches|length }} match{% if course.matches|length != 1 %}es{% endif %}</span>
+              </div>
+
+              <!-- Table-Specific Action Controls -->
+              <div class="table-actions" onclick="event.stopPropagation();">
+                <button type="button" class="action-btn btn-table-filter" data-course-id="{{ forloop.counter }}">
+                  Filter
+                </button>
+                <button type="button" class="action-btn btn-table-sort" data-course-id="{{ forloop.counter }}">
+                  Sort
+                </button>
+              </div>
+              
+              <i class="fas fa-chevron-down accordion-icon"></i>
+            </div>
+
+            <div class="accordion-content">
+              <div class="table-container">
+                <table class="matches-table">
+                  <thead>
+                    <tr>
+                      <th class="select-cell">
+                        <input type="checkbox" class="select-all-course" data-course="{{ forloop.counter }}"> All
+                      </th>
+                      <th>Accession Number</th>
+                      <th>Call Number</th>
+                      <th>Author</th>
+                      <th>Title</th>
+                      <th>Edition</th>
+                      <th>Volume</th>
+                      <th>Publisher</th>
+                      <th>Year</th>
+                      <th>ISBN</th>
+                      <th>Department</th>
+                      <!-- <th>Jaccard</th> -->
+                      <!-- <th>SBERT</th> -->
+                      <!-- <th>Score</th> -->
+                    </tr>
+                  </thead>
+                  <tbody data-total="{{ course.matches|length }}" data-course-idx="{{ forloop.counter }}">
+                    {% for match in course.matches %}
+                      <tr class="match-row" 
+                          style="{% if forloop.counter > 10 %}display: none;{% endif %}"
+                          data-accession_number="{{ match.entry.accession_number|default:'' }}"
+                          data-title="{{ match.entry.title|default:''|lower }}"
+                          data-author="{{ match.entry.author|default:''|lower }}"
+                          data-year="{{ match.entry.year|default:0 }}"
+                          data-department="{{ match.entry.department|default:'' }}"
+                          data-section="{{ match.entry.section|default:'' }}"
+                          data-recommended_by="{{ match.entry.recommended_by|default:'' }}"
+                          data-score="{{ match.jaccard_sbert|default:0.0 }}">
+                        <td class="select-cell">
+                          <input type="checkbox" 
+                                name="selected_entries" 
+                                class="course-cb-{{ forloop.parentloop.counter }}"
+                                value="{{ match.entry.id }}|{{ course.year_level }}|{{ course.semester }}|{{ course.course_code }}|{{ course.course_title }}">
+                        </td>
+                        <td>{{ match.entry.accession_number }}</td>
+                        <td>{{ match.entry.call_number }}</td>
+                        <td>{{ match.entry.author }}</td>
+                        <td>
+                          {% if match.entry %}
+                            <a href="{% url 'full_details' match.entry.id %}" 
+                              class="book-titles {% if match.jaccard_sbert >= 0.65 %}score-high{% elif match.jaccard_sbert >= 0.3 %}score-medium{% else %}score-low{% endif %}">
+                              {{ match.entry.title }}
+                            </a>
+                          {% else %}
+                            <span class="book-titles">Entry Not Found</span>
+                          {% endif %}
+                        </td>
+                        <td>{{ match.entry.edition|default:"" }}</td>
+                        <td>{{ match.entry.volume|default:"" }}</td>
+                        <td>{{ match.entry.publisher|default:"" }}</td>
+                        <td>{{ match.entry.year|default:"" }}</td>
+                        <td>{{ match.entry.isbn|default:"" }}</td>
+                        <td>{{ match.entry.department|default:"" }}</td>
+                        <!-- <td style="color: #4b5563;">{{ match.jaccard|floatformat:2 }}</td> -->
+                        <!-- <td style="color: #4b5563;">{{ match.sbert|floatformat:2 }}</td> -->
+                        <!-- <td>
+                          <span class="{% if match.jaccard_sbert >= 0.65 %}score-high{% elif match.jaccard_sbert >= 0.3 %}score-medium{% else %}score-low{% endif %}" style="font-weight: 600;">
+                            {{ match.jaccard_sbert|floatformat:2 }}
+                          </span>
+                        </td> -->
+                      </tr>
+                    {% empty %}
+                      <tr>
+                        <td colspan="14" style="text-align: center;">No matching books found for this subject.</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="toggle-rows-wrapper" style="display: flex; gap: 10px; justify-content: center;">
+                <button type="button" class="btn-toggle-rows btn-show-more">
+                  <span>Show 10 More</span>
+                  <span class="count-pill">+0</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+
+                <button type="button" class="btn-toggle-rows btn-show-less" style="display: none;">
+                  <span>Show 10 Less</span>
+                  <i class="fas fa-chevron-up"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        {% empty %}
+          <p style="padding: 20px; text-align: center; background: #fff; border-radius: 8px;">No batch results to display. Please upload a valid course list file (.xlsx).</p>
+        {% endfor %}
+      </form>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    © 2026 Henry Luce III Library, All Rights Reserved
+  </footer>
+
+  <!-- Filter Overlay -->
+  <div id="filterOverlay" class="overlay">
+    <div class="overlay-content">
+      <span class="close-btn" id="closeOverlay">&times;</span>
+      <h3>Filter Options</h3>
+      <form id="filterForm">
+        <!-- Department -->
+        <div class="form-grid">
+          <div class="filter-group">
+            <h4>Department</h4>
+            <div class="checkbox-grid">
+              <label><input type="checkbox" name="department" value="College of Agriculture, Resources and Environmental Sciences"> College of Agriculture, Resources and Environmental Sciences</label>
+              <label><input type="checkbox" name="department" value="College of Arts and Sciences"> College of Arts and Sciences</label>
+              <label><input type="checkbox" name="department" value="College of Business and Accountancy"> College of Business and Accountancy</label>
+              <label><input type="checkbox" name="department" value="College of Computer Studies"> College of Computer Studies</label>
+              <label><input type="checkbox" name="department" value="College of Education"> College of Education</label>
+              <label><input type="checkbox" name="department" value="College of Engineering"> College of Engineering</label>
+              <label><input type="checkbox" name="department" value="College of Hospitality Management"> College of Hospitality Management</label>
+              <label><input type="checkbox" name="department" value="College of Law"> College of Law</label>
+              <label><input type="checkbox" name="department" value="College of Medical Laboratory Sciences"> College of Medical Laboratory Sciences</label>
+              <label><input type="checkbox" name="department" value="College of Nursing"> College of Nursing</label>
+              <label><input type="checkbox" name="department" value="College of Pharmacy"> College of Pharmacy</label>
+              <label><input type="checkbox" name="department" value="College of Theology"> College of Theology</label>
+              <label><input type="checkbox" name="department" value="Elementary"> Elementary</label>
+              <label><input type="checkbox" name="department" value="Junior High School"> Junior High School</label>
+              <label><input type="checkbox" name="department" value="Kindergarten"> Kindergarten</label>
+              <label><input type="checkbox" name="department" value="School of Graduate Studies"> School of Graduate Studies</label>
+              <label><input type="checkbox" name="department" value="Senior High School"> Senior High School</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section -->
+        <div class="form-grid">
+          <div class="filter-group">
+            <h4>Section</h4>
+            <div class="checkbox-grid">
+              <label><input type="checkbox" name="section" value="Circulation/Reserve"> Circulation/Reserve</label>
+              <label><input type="checkbox" name="section" value="Elementary"> Elementary</label>
+              <label><input type="checkbox" name="section" value="Filipiniana"> Filipiniana</label>
+              <label><input type="checkbox" name="section" value="Graduate Studies"> Graduate Studies</label>
+              <label><input type="checkbox" name="section" value="Junior High School"> Junior High School</label>
+              <label><input type="checkbox" name="section" value="Kindergarten"> Kindergarten</label>
+              <label><input type="checkbox" name="section" value="Law"> Law</label>
+              <label><input type="checkbox" name="section" value="Reference"> Reference</label>
+              <label><input type="checkbox" name="section" value="Senior High School"> Senior High School</label>
+              <label><input type="checkbox" name="section" value="Theology"> Theology</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recommended By -->
+        <div class="form-grid">
+          <div class="filter-group">
+            <h4>Recommended By</h4>
+            <div class="checkbox-grid">
+              <label><input type="checkbox" name="recommended_by" value="Director of Libraries"> Director of Libraries</label>
+              <label><input type="checkbox" name="recommended_by" value="Dean"> Dean</label>
+              <label><input type="checkbox" name="recommended_by" value="Principal"> Principal</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Year -->
+        <div class="form-grid">
+          <div class="filter-group">
+            <h4>Year</h4>
+            <div class="checkbox-grid">
+              <label><input type="checkbox" name="year" value="2020"> 2020</label>
+              <label><input type="checkbox" name="year" value="2021"> 2021</label>
+              <label><input type="checkbox" name="year" value="2022"> 2022</label>
+              <label><input type="checkbox" name="year" value="2023"> 2023</label>
+              <label><input type="checkbox" name="year" value="2024"> 2024</label>
+              <label><input type="checkbox" name="year" value="2025"> 2025</label>
+              <label><input type="checkbox" name="year" value="2026"> 2026</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <button type="submit">Apply Filters</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Sort Overlay -->
+  <div id="sortOverlay" class="overlay">
+    <div class="overlay-content">
+      <span class="close-btn" id="closeSort">&times;</span>
+      <h3>Sort Options</h3>
+      <form id="sortForm">
+        <div class="filter-group">
+          <h4>Sort Field</h4>
+          <select name="sort_field">
+            <option value="accession_number">Accession Number</option>
+            <option value="title">Title</option>
+            <option value="author">Author</option>
+            <option value="year">Year</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <h4>Order</h4>
+          <label><input type="radio" name="sort_order" value="asc"> Ascending</label>
+          <label><input type="radio" name="sort_order" value="desc" checked> Descending</label>
+        </div>
+
+        <div class="action-buttons">
+          <button type="submit">Apply Sorting</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Unified JS Controller -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      let activeCourseId = null;
+
+      // Sidebar logic
+      window.openSidebar = () => document.getElementById("sidebarMenu").style.width = "250px";
+      window.closeSidebar = () => document.getElementById("sidebarMenu").style.width = "0";
+
+      // Accordion toggles
+      document.querySelectorAll(".accordion-header").forEach(header => {
+        header.addEventListener("click", function() {
+          this.closest(".course-section").classList.toggle("collapsed");
+        });
+      });
+
+      // Pagination Helper Logic
+      function updateTablePagination(section, resetLimit = false) {
+        if (resetLimit) {
+          section.dataset.visibleLimit = "10";
+        }
+
+        const visibleLimit = parseInt(section.dataset.visibleLimit || "10", 10);
+        const filteredRows = Array.from(section.querySelectorAll("tr.match-row")).filter(row => !row.classList.contains("filtered-out"));
+
+        filteredRows.forEach((row, idx) => {
+          if (idx < visibleLimit) {
+            row.style.display = "table-row";
+          } else {
+            row.style.display = "none";
+          }
+        });
+
+        const toggleWrapper = section.querySelector(".toggle-rows-wrapper");
+        const btnMore = section.querySelector(".btn-show-more");
+        const btnLess = section.querySelector(".btn-show-less");
+
+        const remainingCount = filteredRows.length - visibleLimit;
+
+        if (filteredRows.length <= 10) {
+          if (toggleWrapper) toggleWrapper.style.display = "none";
+        } else {
+          if (toggleWrapper) toggleWrapper.style.display = "flex";
+
+          if (remainingCount > 0) {
+            btnMore.style.display = "inline-flex";
+            const showCount = Math.min(10, remainingCount);
+            btnMore.querySelector("span").textContent = `Show ${showCount} More`;
+            btnMore.querySelector(".count-pill").textContent = `+${remainingCount}`;
+          } else {
+            btnMore.style.display = "none";
+          }
+
+          if (visibleLimit > 10) {
+            btnLess.style.display = "inline-flex";
+          } else {
+            btnLess.style.display = "none";
+          }
+        }
+      }
+
+      // Initialize all table paginations
+      document.querySelectorAll(".course-section").forEach(section => {
+        updateTablePagination(section, true);
+
+        const btnMore = section.querySelector(".btn-show-more");
+        const btnLess = section.querySelector(".btn-show-less");
+
+        if (btnMore) {
+          btnMore.addEventListener("click", function() {
+            let currentLimit = parseInt(section.dataset.visibleLimit || "10", 10);
+            section.dataset.visibleLimit = (currentLimit + 10).toString();
+            updateTablePagination(section);
+          });
+        }
+
+        if (btnLess) {
+          btnLess.addEventListener("click", function() {
+            let currentLimit = parseInt(section.dataset.visibleLimit || "10", 10);
+            section.dataset.visibleLimit = Math.max(10, currentLimit - 10).toString();
+            updateTablePagination(section);
+          });
+        }
+      });
+
+      // Modals triggers
+      document.querySelectorAll(".btn-table-filter").forEach(btn => {
+        btn.addEventListener("click", function(e) {
+          e.stopPropagation();
+          activeCourseId = this.getAttribute("data-course-id");
+          document.getElementById("filterOverlay").style.display = "block";
+        });
+      });
+
+      document.querySelectorAll(".btn-table-sort").forEach(btn => {
+        btn.addEventListener("click", function(e) {
+          e.stopPropagation();
+          activeCourseId = this.getAttribute("data-course-id");
+          document.getElementById("sortOverlay").style.display = "block";
+        });
+      });
+
+      document.getElementById("closeOverlay").addEventListener("click", () => {
+        document.getElementById("filterOverlay").style.display = "none";
+      });
+      document.getElementById("closeSort").addEventListener("click", () => {
+        document.getElementById("sortOverlay").style.display = "none";
+      });
+
+      window.addEventListener("click", function(e) {
+        if (e.target.classList.contains("overlay")) {
+          e.target.style.display = "none";
+        }
+      });
+
+      // Client-Side Sorting
+      const sortForm = document.getElementById("sortForm");
+      if (sortForm) {
+        sortForm.addEventListener("submit", function(e) {
+          e.preventDefault();
+          if (!activeCourseId) return;
+
+          const field = sortForm.querySelector("select[name='sort_field']").value;
+          const order = sortForm.querySelector("input[name='sort_order']:checked").value;
+
+          const section = document.querySelector(`.course-section[data-course-id="${activeCourseId}"]`);
+          const tbody = section.querySelector("tbody");
+          const rows = Array.from(tbody.querySelectorAll("tr.match-row"));
+
+          rows.sort((a, b) => {
+            let valA = a.getAttribute(`data-${field}`) || "";
+            let valB = b.getAttribute(`data-${field}`) || "";
+
+            if (!isNaN(valA) && !isNaN(valB) && valA !== "" && valB !== "") {
+              valA = parseFloat(valA);
+              valB = parseFloat(valB);
+            }
+
+            if (valA < valB) return order === "asc" ? -1 : 1;
+            if (valA > valB) return order === "asc" ? 1 : -1;
+            return 0;
+          });
+
+          rows.forEach(row => tbody.appendChild(row));
+          updateTablePagination(section, true);
+          document.getElementById("sortOverlay").style.display = "none";
+        });
+      }
+
+      // Client-Side Filtering
+      const filterForm = document.getElementById("filterForm");
+      if (filterForm) {
+        filterForm.addEventListener("submit", function(e) {
+          e.preventDefault();
+          if (!activeCourseId) return;
+
+          const depts = Array.from(filterForm.querySelectorAll("input[name='department']:checked")).map(cb => cb.value);
+          const sections = Array.from(filterForm.querySelectorAll("input[name='section']:checked")).map(cb => cb.value);
+          const recs = Array.from(filterForm.querySelectorAll("input[name='recommended_by']:checked")).map(cb => cb.value);
+          const years = Array.from(filterForm.querySelectorAll("input[name='year']:checked")).map(cb => cb.value);
+
+          const section = document.querySelector(`.course-section[data-course-id="${activeCourseId}"]`);
+          const rows = section.querySelectorAll("tr.match-row");
+
+          rows.forEach(row => {
+            const rowDept = row.getAttribute("data-department");
+            const rowSec = row.getAttribute("data-section");
+            const rowRec = row.getAttribute("data-recommended_by");
+            const rowYear = row.getAttribute("data-year");
+
+            const matchDept = depts.length === 0 || depts.includes(rowDept);
+            const matchSec = sections.length === 0 || sections.includes(rowSec);
+            const matchRec = recs.length === 0 || recs.includes(rowRec);
+            const matchYear = years.length === 0 || years.includes(rowYear);
+
+            if (matchDept && matchSec && matchRec && matchYear) {
+              row.classList.remove("filtered-out");
+            } else {
+              row.classList.add("filtered-out");
+              row.style.display = "none";
+            }
+          });
+
+          updateTablePagination(section, true);
+          document.getElementById("filterOverlay").style.display = "none";
+        });
+      }
+    });
+  </script>
+
+  <!-- Bibliography Checkbox Storage -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const STORAGE_KEY = "selected_bib_entries";
+      const bibForm = document.getElementById("bib-form");
+
+      function getStoredIds() {
+        try {
+          const raw = sessionStorage.getItem(STORAGE_KEY);
+          return new Set(raw ? JSON.parse(raw) : []);
+        } catch (e) {
+          return new Set();
+        }
+      }
+
+      function saveStoredIds(idSet) {
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(idSet)));
+      }
+
+      const storedIds = getStoredIds();
+      const pageCheckboxes = document.querySelectorAll("input[name='selected_entries']");
+
+      pageCheckboxes.forEach(cb => {
+        if (storedIds.has(cb.value)) cb.checked = true;
+
+        cb.addEventListener("change", function(e) {
+          const ids = getStoredIds();
+          if (e.target.checked) ids.add(e.target.value);
+          else ids.delete(e.target.value);
+          saveStoredIds(ids);
+        });
+      });
+
+      document.querySelectorAll(".select-all-course").forEach(selectAll => {
+        selectAll.addEventListener("change", function() {
+          const courseIdx = this.getAttribute("data-course");
+          const checkboxes = document.querySelectorAll(`.course-cb-${courseIdx}`);
+          const ids = getStoredIds();
+
+          checkboxes.forEach(cb => {
+            cb.checked = this.checked;
+            if (this.checked) ids.add(cb.value);
+            else ids.delete(cb.value);
+          });
+          saveStoredIds(ids);
+        });
+      });
+
+      if (bibForm) {
+        bibForm.addEventListener("submit", function(e) {
+          const ids = getStoredIds();
+          if (ids.size === 0) {
+            e.preventDefault();
+            alert("Please select at least one entry to generate a bibliography.");
+            return;
+          }
+
+          document.querySelectorAll(".injected-selected-id").forEach(el => el.remove());
+          pageCheckboxes.forEach(cb => { cb.disabled = true; });
+
+          ids.forEach(id => {
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.className = "injected-selected-id";
+            input.name = "selected_entries";
+            input.value = id;
+            bibForm.appendChild(input);
+          });
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>
+
+
+
+

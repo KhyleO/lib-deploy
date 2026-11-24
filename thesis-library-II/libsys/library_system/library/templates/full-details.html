@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ entry.title }} - Full Details</title>
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box; 
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #F7F7F7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: #D19D1C;
+      padding: 16px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .logo img {
+      height: 80px;
+      width: auto;
+      margin: -15px 20px;
+    }
+
+    nav {
+      display: flex;
+      gap: 35px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #02062C;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      opacity: 0.7;
+    }
+
+    .login-btn {
+      background: #02062C;
+      color: #fff;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .login-btn:hover {
+      background: #0b145f;
+    }
+
+    /* MAIN */
+    main {
+      flex: 1;
+      padding: 20px;
+    }
+
+    .details-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      padding: 20px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      color: #02062C;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    .back-btn:hover {
+      opacity: 0.7;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #02062C;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 18px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-right: 10px;
+      margin-top: 20px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .btn:hover {
+      background: #0b145f;
+    }
+
+    .btn-danger {
+      background: #c00;
+    }
+
+    .btn-danger:hover {
+      background: #a00;
+    }
+
+    .btn-cancel {
+      background: #D19D1C;
+      color: #02062C;
+    }
+
+    .btn-cancel:hover {
+      opacity: 0.9;
+    }
+
+    .book-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #02062C;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .book-author {
+      font-size: 1rem;
+      color: #D19D1C;
+      font-weight: 600;
+      margin-bottom: 30px;
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 25px;
+      margin-top: 5px;
+    }
+
+    .detail-item {
+      border-left: 4px solid #D19D1C;
+      padding-left: 15px;
+    }
+
+    .detail-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .detail-value {
+      font-size: 0.7rem;
+      color: #333;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .detail-value.empty {
+      color: #999;
+      font-style: italic;
+    }
+
+    .full-width {
+      display: block;
+      width: 100%;
+      -webkit-column-span: all;
+      column-span: all;
+      break-inside: avoid;
+      margin-bottom: 18px;
+    }
+
+    footer {
+      background: #02062C;
+      color: #fff;
+      text-align: center;
+      padding: 18px 15px;
+      font-size: 0.95rem;
+      font-weight: 400;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      right: 0;
+      background-color: #02062C;
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 40px;
+      z-index: 1001;
+    }
+
+    .sidebar a {
+      padding: 15px 0px 15px 50px;
+      text-decoration: none;
+      font-size: 1rem;
+      color: #FFFFFF;
+      display: block;
+      transition: 0.2s;
+    }
+
+    .sidebar a:hover {
+      background-color: #0b145f;
+    }
+
+    .sidebar .closebtn {
+      position: absolute;
+      top: 5px;
+      right: 15px;
+      font-size: 2rem;
+      color: #FFFFFF;
+      cursor: pointer;
+    }
+
+    /* MODAL DIALOG STYLES */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(2, 6, 44, 0.6);
+      backdrop-filter: blur(3px);
+      z-index: 10000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-card {
+      background: #fff;
+      padding: 30px;
+      border-radius: 16px;
+      max-width: 440px;
+      width: 90%;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      text-align: center;
+      animation: popup 0.2s ease-out;
+    }
+
+    @keyframes popup {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-card h3 {
+      font-size: 1.25rem;
+      color: #02062C;
+      margin-bottom: 10px;
+    }
+
+    .modal-card p {
+      font-size: 0.85rem;
+      color: #555;
+      margin-bottom: 24px;
+      line-height: 1.4;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    @media (max-width: 768px) {
+      main {
+        padding: 20px;
+      }
+
+      .details-container {
+        padding: 25px;
+      }
+
+      .details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-auto-flow: column;
+        gap: 25px;
+        margin-top: 30px;
+      }
+
+      .book-title {
+        font-size: 1.8rem;
+      }
+
+      header {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      nav {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <img src="{% static 'css/images/henryluce.png' %}" alt="Library Logo">
+    </div>
+
+    <nav>
+      {% if user.is_authenticated %}
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'acquisition' %}">Search</a>
+        <a href="{% url 'acquisition_batch' %}">Acquisition</a>
+        {% if is_librarian %}
+        <a href="{% url 'encoding' %}">Encoding</a>
+        {% endif %}
+      {% endif %}
+    </nav>
+
+    {% if user.is_authenticated %}
+      <button class="login-btn" onclick="openSidebar()">
+        {{ user.username }}
+      </button>
+    {% else %}
+      <a href="{% url 'login' %}" class="login-btn">Login</a>
+    {% endif %}
+  </header>
+
+  <div id="sidebarMenu" class="sidebar">
+    <span class="closebtn" onclick="closeSidebar()">&times;</span>
+    <a href="{% url 'profile' %}">Profile</a>
+    <a href="{% url 'logout' %}">Logout</a>
+  </div>
+
+  <!-- MAIN -->
+  <main>
+    <div class="details-container">
+        <a href="{% url 'acquisition' %}" class="back-btn">
+          <i class="fas fa-arrow-left"></i>
+        </a>
+        <span>Return</span>
+
+        <h2 class="book-title">{{ entry.title }}</h2>
+        {% if entry.author %}
+        <p class="book-author">by {{ entry.author }}</p>
+        {% endif %}
+
+        <div class="details-grid">
+          <div class="detail-item">
+              <div class="detail-label">Accession Number</div>
+              <div class="detail-value">
+              {% if entry.accession_number %}{{ entry.accession_number }}{% else %}<span class="empty">----------</span>{% endif %}
+              </div>
+          </div>
+
+          <div class="detail-item">
+              <div class="detail-label">Call Number</div>
+              <div class="detail-value">
+              {% if entry.call_number %}{{ entry.call_number }}{% else %}<span class="empty">----------</span>{% endif %}
+              </div>
+          </div>
+
+          <div class="detail-item">
+              <div class="detail-label">Edition</div>
+              <div class="detail-value">
+              {% if entry.edition %}{{ entry.edition }}{% else %}<span class="empty">----------</span>{% endif %}
+              </div>
+          </div>
+
+          <div class="detail-item">
+              <div class="detail-label">Volume</div>
+              <div class="detail-value">
+              {% if entry.volume %}{{ entry.volume }}{% else %}<span class="empty">----------</span>{% endif %}
+              </div>
+          </div>
+
+          <div class="detail-item">
+              <div class="detail-label">Publisher</div>
+              <div class="detail-value">
+              {% if entry.publisher %}{{ entry.publisher }}{% else %}<span class="empty">----------</span>{% endif %}
+              </div>
+          </div>
+
+          <div class="detail-item">
+              <div class="detail-label">Year</div>
+              <div class="detail-value">
+              {% if entry.year %}{{ entry.year }}{% else %}<span class="empty">----------</span>{% endif %}
+              </div>
+          </div>
+
+          <div class="detail-item">
+              <div class="detail-label">ISBN</div>
+              <div class="detail-value">
+              {% if entry.isbn %}{{ entry.isbn }}{% else %}<span class="empty">----------</span>{% endif %}
+              </div>
+          </div>
+
+          <div class="detail-item">
+              <div class="detail-label">Pages</div>
+              <div class="detail-value">
+              {% if entry.pages %}{{ entry.pages }}{% else %}<span class="empty">----------</span>{% endif %}
+              </div>
+          </div>
+
+          <div class="detail-item">
+              <div class="detail-label">Place of Publication</div>
+              <div class="detail-value">
+              {% if entry.place_of_publication %}{{ entry.place_of_publication }}{% else %}<span class="empty">----------</span>{% endif %}
+              </div>
+          </div>
+
+          <div class="detail-item">
+              <div class="detail-label">Price</div>
+              <div class="detail-value">
+              {% if entry.price %}₱{{ entry.price }}{% else %}<span class="empty">----------</span>{% endif %}
+              </div>
+          </div>
+
+          <div class="detail-item">
+              <div class="detail-label">Department</div>
+              <div class="detail-value">
+              {% if entry.department %}{{ entry.department }}{% else %}<span class="empty">----------</span>{% endif %}
+              </div>
+          </div>
+
+          <div class="detail-item">
+              <div class="detail-label">Section</div>
+              <div class="detail-value">
+              {% if entry.section %}{{ entry.section }}{% else %}<span class="empty">----------</span>{% endif %}
+              </div>
+          </div>
+
+          <div class="detail-item">
+              <div class="detail-label">Recommended By</div>
+              <div class="detail-value">
+              {% if entry.recommended_by %}{{ entry.recommended_by }}{% else %}<span class="empty">----------</span>{% endif %}
+              </div>
+          </div>
+
+          <div class="detail-item">
+              <div class="detail-label">Dealer</div>
+              <div class="detail-value">
+              {% if entry.dealer %}{{ entry.dealer }}{% else %}<span class="empty">----------</span>{% endif %}
+              </div>
+          </div>
+
+          <div class="detail-item">
+              <div class="detail-label">PO Number</div>
+              <div class="detail-value">
+              {% if entry.po_number %}{{ entry.po_number }}{% else %}<span class="empty">----------</span>{% endif %}
+              </div>
+          </div>
+
+          <div class="detail-item">
+              <div class="detail-label">SI Number</div>
+              <div class="detail-value">
+              {% if entry.si_number %}{{ entry.si_number }}{% else %}<span class="empty">----------</span>{% endif %}
+              </div>
+          </div>
+
+          <div class="detail-item">
+              <div class="detail-label">Budget Charge</div>
+              <div class="detail-value">
+              {% if entry.budget_charge %}{{ entry.budget_charge }}{% else %}<span class="empty">----------</span>{% endif %}
+              </div>
+          </div>
+
+          <div class="detail-item">
+              <div class="detail-label">Date Received</div>
+              <div class="detail-value">
+              {% if entry.date_received %}{{ entry.date_received|date:"M d, Y" }}{% else %}<span class="empty">----------</span>{% endif %}
+              </div>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+            {% if is_librarian %}
+                <a href="{% url 'edit_entry' entry.id %}" class="btn">Edit</a>
+                <button type="button" class="btn btn-danger" onclick="openDeleteModal()">Delete</button>
+            {% endif %}
+        </div>
+    </div>
+  </main>
+
+  <!-- DELETE CONFIRMATION MODAL OVERLAY -->
+  {% if is_librarian %}
+  <div id="deleteModal" class="modal-overlay">
+    <div class="modal-card">
+      <h3>Confirm Deletion</h3>
+      <p>Are you sure you want to delete <strong>"{{ entry.title }}"</strong>? This action cannot be undone.</p>
+      
+      <div class="modal-actions">
+        <form method="post" action="{% url 'delete_entry' entry.id %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger" style="margin-top:0;">Delete</button>
+        </form>
+        <button type="button" class="btn btn-cancel" style="margin-top:0;" onclick="closeDeleteModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- FOOTER -->
+  <footer>
+    © 2026 Henry Luce III Library, All Rights Reserved
+  </footer>
+
+  <script>
+    function openSidebar() {
+      document.getElementById("sidebarMenu").style.width = "250px";
+    }
+
+    function closeSidebar() {
+      document.getElementById("sidebarMenu").style.width = "0";
+    }
+
+    function openDeleteModal() {
+      const modal = document.getElementById("deleteModal");
+      if (modal) modal.style.display = "flex";
+    }
+
+    function closeDeleteModal() {
+      const modal = document.getElementById("deleteModal");
+      if (modal) modal.style.display = "none";
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,473 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library Reporting System</title>
+  
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #F7F7F7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    main {
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Centers container contents horizontally */
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #02062C;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    .header-spacer {
+      width: 350px;
+    }
+
+    /* Export Header Panel */
+    .report-controls {
+      width: 8.5in;
+      margin: 0 auto 20px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #ffffff;
+      padding: 12px 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border-radius: 8px;
+      border-top: 4px solid #D19D1C;
+    }
+
+    .top-action-btns {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .nav-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background-color: #02062C;
+      color: #ffffff;
+      border: none;
+      padding: 10px 18px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: 0.85rem;
+      cursor: pointer;
+      border-radius: 30px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+      transition: all 0.3s ease;
+      margin-top: 15px;
+    }
+
+    .nav-toggle-btn:hover {
+      background-color: #0b145f;
+      transform: translateY(-2px);
+    }
+
+    .nav-toggle-btn.hidden {
+      display: none !important;
+    }
+
+    .btn-export {
+      padding: 7px 14px;
+      border: none;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: 0.75rem;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: opacity 0.3s ease;
+    }
+
+    .btn-export:hover {
+      opacity: 0.88;
+    }
+
+    .btn-pdf { background-color: #dc3545; }
+    .btn-xlsx { background-color: #198754; }
+    .btn-csv { background-color: #0d6efd; }
+
+    /* Report Container strictly centered */
+    .report-container {
+      width: 8.5in;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Page View Dimensions & Alignment */
+    .page-view {
+      width: 8.5in;
+      min-height: 11in;
+      padding: 0.4in 0.5in; /* Optimized paper margin */
+      margin: 0 auto;
+      background: #ffffff;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+      display: none;
+    }
+
+    .page-view.active {
+      display: block; 
+      font-size: 11px;
+    }
+
+    .biblio-header, .summary-header {
+      text-align: center;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    
+    .year-header {
+      background-color: #92D050;
+      padding: 3px 12px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1rem;
+      color: black;
+      margin-top: 10px;
+    }
+    
+    .semester-header {
+      background-color: #FFFF00;
+      padding: 2px 5px;
+      font-weight: 600;
+      color: black;
+      text-align: left;
+    }
+
+    .course-header {
+      background-color: #00B0F0;
+      padding: 2px 5px;
+      font-weight: 600;
+      color: black;
+      text-align: left;
+    }
+    
+    .years-range {
+      background-color: #5B9BD5;
+      padding: 2px 12px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 0.85em;
+      color: black;
+      margin-bottom: 6px;
+    }
+    
+    .biblio-list {
+      list-style-type: none;
+      padding-left: 5px;
+      text-align: left;
+    }
+      
+    .biblio-list li {
+      margin-bottom: 5px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 9.5px;
+      text-align: left;
+    }
+
+    /* COMPACT SUMMARY TABLE STYLING */
+    .summary-table {
+      width: 100%;
+      max-width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      margin-bottom: 10px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 8.5pt; /* Scaled down for print-fit */
+      table-layout: fixed;
+      word-wrap: break-word;
+      color: #000000 !important;
+    }
+
+    .summary-table th, 
+    .summary-table td,
+    .summary-table tr,
+    .summary-table strong,
+    .summary-table span {
+      border: 1px solid #000000;
+      padding: 2px 5px; /* Compact cell padding */
+      vertical-align: middle;
+      color: #000000 !important;
+    }
+
+    .summary-table .year-header {
+      background-color: #92D050;
+      font-weight: 600;
+      font-size: 9.5pt;
+      text-align: center;
+      padding: 3px;
+      color: #000000 !important;
+    }
+
+    .summary-table .semester-header {
+      background-color: #FFFF00;
+      font-weight: 600;
+      text-align: left;
+      padding: 3px 5px;
+      color: #000000 !important;
+    }
+
+    .summary-table .recency-header {
+      background-color: #FFC000;
+      font-weight: 600;
+      text-align: center;
+      font-size: 8pt;
+      padding: 3px 5px;
+      color: #000000 !important;
+    }
+
+    .summary-table .col-header th {
+      background-color: #f2f2f2;
+      font-weight: 600;
+      text-align: center;
+      color: #000000 !important;
+    }
+
+    .summary-table .total-row td, 
+    .summary-table .total-row th {
+      background-color: #e9ecef;
+      font-weight: bold;
+      color: #000000 !important;
+    }
+
+    .text-center { text-align: center; }
+    .text-right { text-align: right; }
+    .text-left { text-align: left; }
+
+    /* FOOTER */
+    footer {
+      background:#02062C;
+      color:#fff;
+      text-align:center;
+      padding:18px 15px;
+      font-size:0.95rem;
+      font-weight:400;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <main>
+    <div class="report-controls">
+      <div class="top-action-btns">
+          <a href="{% if is_batch_mode %}{% url 'acquisition_batch' %}{% else %}{% url 'acquisition' %}{% if query %}?q={{ query|urlencode }}{% endif %}{% endif %}" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            <span>Back</span>
+          </a>
+
+          {% if is_librarian %}
+            <form id="exportForm" method="POST" action="{% url 'export_file' %}">
+                {% csrf_token %}
+                <input type="hidden" name="export_type" id="exportType" value="pdf">
+                <input type="hidden" name="target_page" id="targetPage" value="all">
+
+                <!-- Include selected entry payloads -->
+                {% for item in raw_selected %}
+                    <input type="hidden" name="selected_entries" value="{{ item }}">
+                {% endfor %}
+
+                <button type="button" class="btn-export btn-pdf" onclick="triggerExport('pdf')">Export PDF</button>
+                <button type="button" class="btn-export btn-xlsx" onclick="triggerExport('xlsx')">Export Excel</button>
+                <button type="button" class="btn-export btn-csv" onclick="triggerExport('csv')">Export CSV</button>
+            </form>
+          {% endif %}
+      </div>
+    </div>
+
+    <div class="report-container">
+        <!-- PAGE 1: BIBLIOGRAPHY VIEW -->
+        <div class="page-view active" id="page-biblio">
+            <div class="biblio-header">
+                COLLEGE OF {% if college_name %}
+                <!-- <h3>{{ college_name|upper }}</h3>{% endif %} -->
+                <p>Central Philippine University<br>Jaro, Iloilo City, Philippines</p>
+                <br>
+                <!-- {% if program_name %}<h3>{{ program_name|upper }}</h3>{% endif %} -->
+                {% if curriculum_ay or cmo_info %}
+                    <p>
+                        {% if curriculum_ay %}{{ curriculum_ay }}<br>{% endif %}
+                        {% if cmo_info %}{{ cmo_info }}{% endif %}
+                    </p>
+                {% endif %}
+                <h3>(BIBLIOGRAPHY)</h3>
+            </div>
+
+            {% for year, semesters in grouped_data.items %}
+                <div class="year-header">{{ year|upper }}</div>
+                {% for semester, courses in semesters.items %}
+                    <div class="semester-header">{{ semester }}</div>
+                    {% for course_name, group in courses.items %}
+                        <div class="course-header">{{ course_name }}</div>
+                        <div class="years-range">{{ group.year_range }}</div>
+                        <ul class="biblio-list">
+                            {% for entry in group.entries %}
+                            <li>
+                                {{ entry.author }} ({{ entry.year }}). <em>{{ entry.title }}</em>.
+                                {% if entry.edition %}({{ entry.edition }}).{% endif %}
+                                {% if entry.place_of_publication %}{{ entry.place_of_publication }}:{% endif %}
+                                {% if entry.publisher %}{{ entry.publisher }}.{% endif %}
+                                {% if entry.call_number %}{{ entry.call_number }}.{% endif %}
+                                {% if entry.copies %}{{ entry.copies }} {% if entry.copies == 1 %}copy{% else %}copies{% endif %}.{% endif %}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    {% endfor %}
+                {% endfor %}
+            {% empty %}
+                <p class="text-center">No records selected for bibliography.</p>
+            {% endfor %}
+        </div>
+
+        <!-- PAGE 2: SUMMARY VIEW -->
+        <div class="page-view" id="page-summary">
+            <div class="summary-header text-center">
+                COLLEGE OF {% if college_name %}
+                <!-- <h3>{{ college_name|upper }}</h3>{% endif %} -->
+                <p>Central Philippine University<br>
+                Jaro, Iloilo City, Philippines</p>
+                <br>
+                <!-- <h3>{{ program_name|upper }}</h3> -->
+                <!-- <p>{{ curriculum_ay }}</p> -->
+                <h3>(SUMMARY)</h3>
+                {% if not is_batch_mode and search_query %}
+                    <p><strong>Search Query:</strong> "{{ search_query }}"</p>
+                {% endif %}
+            </div>
+
+            {% for year_level, semesters in summary_data.items %}
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th colspan="4" class="year-header">{{ year_level }}</th>
+                        </tr>
+                    </thead>
+                    {% for semester, data in semesters.items %}
+                        <tbody>
+                            <tr>
+                                <td colspan="2" class="semester-header">{{ semester }}</td>
+                                <td colspan="2" class="recency-header">{{ data.year_range }}</td>
+                            </tr>
+                            <tr class="col-header">
+                                <th style="width: 20%;">Course Code</th>
+                                <th style="width: 60%;">Course Title</th>
+                                <th style="width: 10%;">T</th>
+                                <th style="width: 10%;">V</th>
+                            </tr>
+                            {% for course in data.courses %}
+                                <tr>
+                                    <td class="text-center"><strong>{{ course.course_code }}</strong></td>
+                                    <td class="text-left">{{ course.course_title }}</td>
+                                    <td class="text-center">{{ course.t_count }}</td>
+                                    <td class="text-center">{{ course.v_count }}</td>
+                                </tr>
+                            {% endfor %}
+                            <tr class="total-row">
+                                <td colspan="2" class="text-right">Total</td>
+                                <td class="text-center">{{ data.sem_total_t }}</td>
+                                <td class="text-center">{{ data.sem_total_v }}</td>
+                            </tr>
+                        </tbody>
+                    {% endfor %}
+                </table>
+            {% endfor %}
+
+            <table class="summary-table">
+                <thead>
+                    <tr class="total-row">
+                        <th style="width: 80%;" class="text-right">GRAND TOTAL</th>
+                        <th style="width: 10%;" class="text-center">T = {{ grand_total_t }}</th>
+                        <th style="width: 10%;" class="text-center">V = {{ grand_total_v }}</th>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="text-center">
+                            <strong>Overall Publication Date Range:</strong> {{ overall_range }}
+                        </td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+
+        <div class="biblio-summ-btns">
+          <button id="btn-to-summary" class="nav-toggle-btn" onclick="switchPage('summary')">Summary</button>
+          <button id="btn-to-biblio" class="nav-toggle-btn hidden" onclick="switchPage('biblio')">Bibliography</button>
+        </div>
+    </div>
+  </main>
+  
+  <!-- FOOTER -->
+  <footer>
+    © 2026 Henry Luce III Library, All Rights Reserved
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+      let currentActivePage = 'biblio';
+
+      function switchPage(targetPage) {
+          currentActivePage = targetPage;
+          
+          // Toggle active views
+          document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active'));
+          document.getElementById('page-' + targetPage).classList.add('active');
+
+          // Toggle action buttons
+          const toSummaryBtn = document.getElementById('btn-to-summary');
+          const toBiblioBtn = document.getElementById('btn-to-biblio');
+
+          if (targetPage === 'biblio') {
+              toSummaryBtn.classList.remove('hidden');
+              toBiblioBtn.classList.add('hidden');
+          } else {
+              toSummaryBtn.classList.add('hidden');
+              toBiblioBtn.classList.remove('hidden');
+          }
+
+          // Scroll smoothly back to top on page switch
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      function triggerExport(format) {
+          document.getElementById('exportType').value = format;
+          document.getElementById('targetPage').value = currentActivePage; 
+          document.getElementById('exportForm').submit();
+      }
+  </script>
+
+</body>
+</html>
