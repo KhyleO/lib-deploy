@@ -107,6 +107,8 @@ def is_librarian(user):
 def is_department(user):
     return user.groups.filter(name="Department").exists()
 
+def is_admin(user):
+    return user.groups.filter(name="Librarian").exists()
 
 def get_auto_departments(user):
     if not user or not user.is_authenticated:
@@ -625,6 +627,7 @@ def invalidate_embedding_cache():
 
 @login_required
 @user_passes_test(is_librarian)
+@user_passes_test(is_admin)
 def encoding_page(request):
     message = None
     is_success = False
@@ -733,6 +736,7 @@ def acquisition_page(request):
 
 @login_required
 @user_passes_test(is_librarian)
+@user_passes_test(is_admin)
 def acquisition_batch_page(request):
     is_librarian = request.user.groups.filter(name="Librarian").exists()
     results = []
@@ -825,6 +829,7 @@ def acquisition_batch_page(request):
 
 @login_required
 @user_passes_test(is_librarian)
+@user_passes_test(is_admin)
 def acquisition_import_page(request):
     return render(request, "acquisition-import.html")
 
@@ -843,6 +848,7 @@ def full_details_page(request, entry_id):
 
 @login_required
 @user_passes_test(is_librarian)
+@user_passes_test(is_admin)
 def edit_entry(request, entry_id):
     entry = get_object_or_404(BibliographyEntry, id=entry_id)
     
@@ -871,6 +877,7 @@ def edit_entry(request, entry_id):
 
 @login_required
 @user_passes_test(is_librarian)
+@user_passes_test(is_admin)
 def delete_entry(request, entry_id):
     entry = get_object_or_404(BibliographyEntry, id=entry_id)
     if request.method == "POST":
@@ -882,6 +889,7 @@ def delete_entry(request, entry_id):
 
 @login_required
 @user_passes_test(is_librarian)
+@user_passes_test(is_admin)
 def import_page(request):
     form = UploadFileForm()
     return render(request, "import-page.html", {"form": form})
@@ -889,6 +897,7 @@ def import_page(request):
 
 @login_required
 @user_passes_test(is_librarian)
+@user_passes_test(is_admin)
 def import_books(request):
     if request.method == "POST":
         action = request.POST.get("action")
@@ -1077,8 +1086,9 @@ def summary_page(request):
     )
 
 
-@login_required
+login_required
 @user_passes_test(is_librarian)
+@user_passes_test(is_admin)
 def export_file(request):
     if request.method == "POST":
         raw_selected = request.POST.getlist("selected_entries") or request.POST.getlist("ids")
