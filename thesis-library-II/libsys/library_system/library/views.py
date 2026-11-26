@@ -601,7 +601,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return render(request, "index-page.html")
+    return render(request, "home-page.html")
 
 
 def profile_page(request):
@@ -612,7 +612,7 @@ def home(request):
     is_librarian = False
     if request.user.is_authenticated:
         is_librarian = request.user.groups.filter(name="Librarian").exists()
-    return render(request, "index-page.html", {"is_librarian": is_librarian})
+    return render(request, "home-page.html", {"is_librarian": is_librarian})
 
 
 # -------------------------------------------------------------------------------------------------
@@ -650,7 +650,7 @@ def encoding_page(request):
     is_librarian = request.user.groups.filter(name="Librarian").exists()
     return render(
         request,
-        "encoding-page.html",
+        "encoding-import-page.html",
         {
             "form": form,
             "message": message,
@@ -720,7 +720,7 @@ def acquisition_page(request):
 
     return render(
         request,
-        "acquisition-page.html",
+        "acquisition-indiv-search.html",
         {
             "query": query,
             "selected_years": selected_years,
@@ -819,7 +819,7 @@ def acquisition_batch_page(request):
 
     return render(
         request,
-        "acquisition-batch-page.html",
+        "acquisition-batch-search.html",
         {
             "results": render_results,
             "is_librarian": is_librarian,
@@ -831,7 +831,7 @@ def acquisition_batch_page(request):
 @user_passes_test(is_librarian)
 @user_passes_test(is_admin)
 def acquisition_import_page(request):
-    return render(request, "acquisition-import.html")
+    return render(request, "batch-search-upload.html")
 
 
 def full_details_page(request, entry_id):
@@ -842,7 +842,7 @@ def full_details_page(request, entry_id):
         else False
     )
     return render(
-        request, "full-details.html", {"entry": entry, "is_librarian": is_librarian}
+        request, "entry-full-details.html", {"entry": entry, "is_librarian": is_librarian}
     )
 
 
@@ -866,7 +866,7 @@ def edit_entry(request, entry_id):
     is_librarian = request.user.groups.filter(name="Librarian").exists()
     return render(
         request,
-        "encoding-page.html",
+        "encoding-import-page.html",
         {
             "form": form,
             "entry": entry,
@@ -884,7 +884,7 @@ def delete_entry(request, entry_id):
         entry.delete()
         invalidate_embedding_cache()
         return redirect("acquisition")
-    return render(request, "confirm_delete.html", {"entry": entry})
+    return render(request, "delete-entry-confirm.html", {"entry": entry})
 
 
 @login_required
