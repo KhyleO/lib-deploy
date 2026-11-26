@@ -6,7 +6,7 @@ class BibliographyEntry(models.Model):
     accession_number = models.CharField(max_length=50, unique=True)
     call_number = models.CharField(max_length=100)
     title = models.CharField(max_length=500)
-    year = models.IntegerField()
+    year = models.IntegerField(null=True, blank=True)
     author = models.CharField(max_length=255)
     
     edition = models.CharField(blank=True, max_length=50, null=True)

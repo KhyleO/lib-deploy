@@ -895,10 +895,51 @@ def import_page(request):
     return render(request, "encoding-import-page.html", {"form": form})
 
 
+def _clean_import_str(val):
+    if val is None or pd.isna(val):
+        return ""
+    if isinstance(val, (datetime.datetime, datetime.date, pd.Timestamp)):
+        return val.strftime("%Y-%m-%d")
+    s = str(val).strip()
+    if s.lower() in ("none", "nan", "nat", "null"):
+        return ""
+    return s
+
+
+def _parse_import_year(val):
+    s = _clean_import_str(val)
+    if not s:
+        return None
+    if re.fullmatch(r"\d{4}", s):
+        return int(s)
+    match = re.search(r"\b(1[5-9]\d\d|20\d\d)\b", s)
+    if match:
+        return int(match.group(1))
+    return None
+
+
+def _parse_import_date(val):
+    if val is None or pd.isna(val):
+        return None
+    if isinstance(val, (datetime.datetime, pd.Timestamp)):
+        return val.date()
+    if isinstance(val, datetime.date):
+        return val
+    s = str(val).strip()
+    if not s or s.lower() in ("none", "nan", "nat", "null"):
+        return None
+    parsed = pd.to_datetime(s, errors="coerce")
+    if pd.isna(parsed):
+        return None
+    return parsed.date()
+
+
 @login_required
 @user_passes_test(is_librarian)
 @user_passes_test(is_admin)
 def import_books(request):
+    import_message = None
+
     if request.method == "POST":
         action = request.POST.get("action")
 
@@ -912,23 +953,36 @@ def import_books(request):
             if form.is_valid():
                 excel_file = request.FILES["file"]
                 df = pd.read_excel(excel_file, keep_default_na=False)
-                df = df.where(pd.notnull(df), None)
-                
+                df.columns = [str(c).strip().lower().replace(" ", "_") for c in df.columns]
+
+                seen_accession = set()
                 preview_list = []
+
                 for _, row in df.iterrows():
-                    if row.get("title") and row.get("author"):
-                        preview_list.append({
-                            "accession_number": row.get("accession_number", ""),
-                            "call_number": row.get("call_number", ""),
-                            "author": row.get("author", ""),
-                            "title": row.get("title", ""),
-                            "edition": row.get("edition", ""),
-                            "volume": row.get("volume", ""),
-                            "publisher": row.get("publisher", ""),
-                            "year": row.get("year", ""),
-                            "isbn": row.get("isbn", ""),
-                            "department": row.get("department", ""),
-                        })
+                    title = _clean_import_str(row.get("title"))
+                    if not title:
+                        continue
+
+                    acc = _clean_import_str(row.get("accession_number"))
+                    if acc and acc in seen_accession:
+                        continue
+                    if acc:
+                        seen_accession.add(acc)
+
+                    parsed_dt = _parse_import_date(row.get("date_received"))
+                    preview_list.append({
+                        "date_received": parsed_dt.strftime("%Y-%m-%d") if parsed_dt else None,
+                        "accession_number": acc,
+                        "call_number": _clean_import_str(row.get("call_number")),
+                        "author": _clean_import_str(row.get("author")),
+                        "title": title,
+                        "edition": _clean_import_str(row.get("edition")),
+                        "volume": _clean_import_str(row.get("volume")),
+                        "publisher": _clean_import_str(row.get("publisher")),
+                        "year": _parse_import_year(row.get("year")),
+                        "isbn": _clean_import_str(row.get("isbn")),
+                        "department": _clean_import_str(row.get("department")),
+                    })
 
                 request.session["import_preview"] = preview_list
                 request.session["import_filename"] = excel_file.name
@@ -936,26 +990,57 @@ def import_books(request):
                 return render(request, "encoding-import-page.html", {
                     "form": form,
                     "filename": excel_file.name,
-                    "preview": preview_list
+                    "preview": preview_list,
+                    "import_message": f"Loaded {len(preview_list)} rows for preview.",
+                })
+            else:
+                import_message = "Please select a valid file before clicking Upload & Preview."
+                return render(request, "encoding-import-page.html", {
+                    "form": form,
+                    "import_message": import_message,
                 })
 
         elif action == "confirm":
             preview_list = request.session.get("import_preview", [])
+            created_count = 0
+            skipped_existing = 0
+            skipped_empty = 0
+
             for row in preview_list:
-                if not BibliographyEntry.objects.filter(accession_number=row["accession_number"]).exists():
-                    BibliographyEntry.objects.create(
-                        accession_number=row["accession_number"],
-                        call_number=row["call_number"],
-                        author=row["author"],
-                        title=row["title"],
-                        edition=row["edition"],
-                        volume=row["volume"],
-                        publisher=row["publisher"],
-                        year=row["year"],
-                        isbn=row["isbn"],
-                        department=row["department"],
-                    )
-            
+                acc = _clean_import_str(row.get("accession_number"))
+                title = _clean_import_str(row.get("title"))
+                if not title:
+                    skipped_empty += 1
+                    continue
+
+                if acc and BibliographyEntry.objects.filter(accession_number=acc).exists():
+                    skipped_existing += 1
+                    continue
+
+                BibliographyEntry.objects.create(
+                    date_received=_parse_import_date(row.get("date_received")),
+                    accession_number=acc,
+                    call_number=_clean_import_str(row.get("call_number")),
+                    author=_clean_import_str(row.get("author")),
+                    title=title,
+                    edition=_clean_import_str(row.get("edition")),
+                    volume=_clean_import_str(row.get("volume")),
+                    publisher=_clean_import_str(row.get("publisher")),
+                    year=_parse_import_year(row.get("year")),
+                    isbn=_clean_import_str(row.get("isbn")),
+                    department=_clean_import_str(row.get("department")),
+                )
+                created_count += 1
+
+            print(
+                f"Import summary -> preview_rows: {len(preview_list)}, "
+                f"created: {created_count}, skipped_existing: {skipped_existing}, "
+                f"skipped_empty: {skipped_empty}"
+            )
+
+            if created_count > 0:
+                invalidate_embedding_cache()
+
             request.session.pop("import_preview", None)
             request.session.pop("import_filename", None)
             return redirect("acquisition")
@@ -963,7 +1048,7 @@ def import_books(request):
     else:
         form = UploadFileForm()
 
-    return render(request, "encoding-import-page.html", {"form": form})
+    return render(request, "encoding-import-page.html", {"form": form, "import_message": import_message})
 
 
 
