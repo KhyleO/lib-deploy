@@ -2,11 +2,11 @@ from django.db import models
 
 
 class BibliographyEntry(models.Model):
-    date_received = models.DateField(null=True, blank=True)
+    date_received = models.DateField()
     accession_number = models.CharField(max_length=50, unique=True)
     call_number = models.CharField(max_length=100)
     title = models.CharField(max_length=500)
-    year = models.IntegerField(null=True, blank=True)
+    year = models.IntegerField()
     author = models.CharField(max_length=255)
     
     edition = models.CharField(blank=True, max_length=50, null=True)
