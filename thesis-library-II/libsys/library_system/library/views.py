@@ -892,7 +892,7 @@ def delete_entry(request, entry_id):
 @user_passes_test(is_admin)
 def import_page(request):
     form = UploadFileForm()
-    return render(request, "import-page.html", {"form": form})
+    return render(request, "encoding-import-page.html", {"form": form})
 
 
 @login_required
@@ -933,7 +933,7 @@ def import_books(request):
                 request.session["import_preview"] = preview_list
                 request.session["import_filename"] = excel_file.name
 
-                return render(request, "import-page.html", {
+                return render(request, "encoding-import-page.html", {
                     "form": form,
                     "filename": excel_file.name,
                     "preview": preview_list
@@ -963,7 +963,7 @@ def import_books(request):
     else:
         form = UploadFileForm()
 
-    return render(request, "import-page.html", {"form": form})
+    return render(request, "encoding-import-page.html", {"form": form})
 
 
 
