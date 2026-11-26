@@ -1086,7 +1086,7 @@ def summary_page(request):
     )
 
 
-login_required
+@login_required
 @user_passes_test(is_librarian)
 @user_passes_test(is_admin)
 def export_file(request):
