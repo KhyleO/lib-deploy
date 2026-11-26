@@ -650,7 +650,7 @@ def encoding_page(request):
     is_librarian = request.user.groups.filter(name="Librarian").exists()
     return render(
         request,
-        "encoding-import-page.html",
+        "encoding-indiv-page.html",
         {
             "form": form,
             "message": message,
