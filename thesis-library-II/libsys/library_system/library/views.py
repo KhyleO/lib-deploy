@@ -714,7 +714,7 @@ def acquisition_page(request):
 
         display_list = [{"entry": e, "jaccard_sbert": 0.0} for e in entries]
 
-    paginator = Paginator(display_list, 15)
+    paginator = Paginator(display_list, 10)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
@@ -793,7 +793,7 @@ def acquisition_batch_page(request):
                         "course_description": course_info["course_description"],
                         "year_level": course_info["year_level"],
                         "semester": course_info["semester"],
-                        "matches": matches[:15], # Limit stored matches per course to prevent session bloatedness
+                        "matches": matches[:30],            # Limit stored matches per course to prevent session bloatedness
                     })
 
         request.session["batch_results"] = results
