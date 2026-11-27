@@ -221,6 +221,21 @@
       margin-bottom: 15px;
     }
 
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      color: #02062C;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    .back-btn:hover {
+      opacity: 0.7;
+    }
+
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
@@ -241,10 +256,10 @@
 
   <!-- MAIN CONTAINER -->
   <main>
-    <div class="upload-card {% if preview %}has-preview{% endif %}">
+    <div class="upload-card">
       <h2 class="page-title">Import Bibliography Entries</h2>
 
-      <form method="post" enctype="multipart/form-data" action="{% url 'import_books' %}">
+      <form id="importForm" method="post" enctype="multipart/form-data" action="{% url 'import_books' %}">
         {% csrf_token %}
 
         <div class="file-input-group">
@@ -264,46 +279,68 @@
           </div>
         </div>
       </form>
-
-      {% if preview %}
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>Accession Number</th>
-              <th>Call Number</th>
-              <th>Author</th>
-              <th>Title</th>
-              <th>Edition</th>
-              <th>Volume</th>
-              <th>Publisher</th>
-              <th>Year</th>
-              <th>ISBN</th>
-              <th>Department</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for entry in preview %}
-            <tr>
-              <td>{{ entry.accession_number }}</td>
-              <td>{{ entry.call_number }}</td>
-              <td>{{ entry.author }}</td>
-              <td>{{ entry.title }}</td>
-              <td>{{ entry.edition }}</td>
-              <td>{{ entry.volume }}</td>
-              <td>{{ entry.publisher }}</td>
-              <td>{{ entry.year }}</td>
-              <td>{{ entry.isbn }}</td>
-              <td>{{ entry.department }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-      {% endif %}
-
     </div>
   </main>
+
+  <!-- PREVIEW POP-UP MODAL -->
+  {% if preview %}
+  <div id="previewModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="previewModalTitle">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div>
+          <h3 id="previewModalTitle">Preview Bibliography Entries</h3>
+          {% if filename %}
+            <p class="modal-subtitle">File: <strong>{{ filename }}</strong></p>
+          {% endif %}
+        </div>
+        <button type="button" class="modal-close-btn" onclick="closePreviewModal()" aria-label="Close preview">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Accession Number</th>
+                <th>Call Number</th>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Edition</th>
+                <th>Volume</th>
+                <th>Publisher</th>
+                <th>Year</th>
+                <th>ISBN</th>
+                <th>Department</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for entry in preview %}
+              <tr>
+                <td>{{ entry.accession_number }}</td>
+                <td>{{ entry.call_number }}</td>
+                <td>{{ entry.author }}</td>
+                <td>{{ entry.title }}</td>
+                <td>{{ entry.edition }}</td>
+                <td>{{ entry.volume }}</td>
+                <td>{{ entry.publisher }}</td>
+                <td>{{ entry.year }}</td>
+                <td>{{ entry.isbn }}</td>
+                <td>{{ entry.department }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" onclick="closePreviewModal()">Close Pop-up</button>
+        <button type="submit" form="importForm" name="action" value="cancel" class="btn-cancel">Cancel Import</button>
+        <button type="submit" form="importForm" name="action" value="confirm" class="btn-save">Confirm &amp; Save</button>
+      </div>
+    </div>
+  </div>
+  {% endif %}
 
   <!-- FOOTER -->
   <footer>
@@ -316,7 +353,6 @@
     <p>Processing request, please wait...</p>
   </div>
 
-  
   <!-- SCRIPTS -->
   <script>
     function showLoading() {
@@ -326,14 +362,43 @@
       }
     }
 
-    document.addEventListener("DOMContentLoaded", function() {
-      const forms = document.querySelectorAll("form");
-      forms.forEach(form => {
-        form.addEventListener("submit", showLoading);
-      });
-    });
+    function closePreviewModal() {
+      const modal = document.getElementById("previewModal");
+      if (modal) {
+        modal.style.display = "none";
+      }
+    }
 
-    window.addEventListener("beforeunload", showLoading);
+    document.addEventListener("DOMContentLoaded", function() {
+      const importForm = document.getElementById("importForm");
+
+      if (importForm) {
+        importForm.addEventListener("submit", function(event) {
+          const submitter = event.submitter;
+          // Show loading overlay for Save or Cancel, or if submitted without a specific button
+          if (!submitter || submitter.value === "confirm" || submitter.value === "cancel") {
+            showLoading();
+          }
+        });
+      }
+
+      // Close pop-up on Escape key
+      document.addEventListener("keydown", function(event) {
+        if (event.key === "Escape") {
+          closePreviewModal();
+        }
+      });
+
+      // Close pop-up when clicking outside the modal box
+      const modal = document.getElementById("previewModal");
+      if (modal) {
+        modal.addEventListener("click", function(event) {
+          if (event.target === modal) {
+            closePreviewModal();
+          }
+        });
+      }
+    });
   </script>
 </body>
 </html>

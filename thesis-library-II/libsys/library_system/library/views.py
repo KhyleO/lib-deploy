@@ -13,6 +13,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Q, Case, When, Value, IntegerField
 from django.forms.models import model_to_dict
 from django.core.paginator import Paginator
+from django.views.decorators.clickjacking import xframe_options_sameorigin
 
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
@@ -889,6 +890,7 @@ def import_page(request):
 
 @login_required
 @user_passes_test(is_librarian)
+@xframe_options_sameorigin
 def import_books(request):
     if request.method == "POST":
         action = request.POST.get("action")

@@ -419,7 +419,7 @@
   </div>
 
 
-  <!-- MAIN -->
+<!-- MAIN -->
   <main>
     <div class="main-content-wrapper">
       
@@ -444,15 +444,15 @@
       {% endif %}
 
       <div class="sub-header">
-        <h2 class="page-title">  
+        <h2 class="page-title">
           {% if entry %}Edit Acquisition Entry{% else %}Acquisition Encoding Form{% endif %}
         </h2>
 
-        <div class="toolbar">
-          {% if not entry %}
-          <a href="{% url 'import_books' %}" class="import-btn">Import</a>
-          {% endif %}
-        </div>
+      <div class="toolbar">
+        {% if not entry %}
+        <button type="button" class="import-btn" onclick="openImportWindow()">Import</button>
+        {% endif %}
+      </div>
       </div>
 
       <div class="form-container">
@@ -481,15 +481,21 @@
               </div>
 
               <div class="form-group">
+                <label>Title <span class="required-field">*</span></label>
+                <input type="text" name="title" value="{{ entry.title|default:form.title.value|default:'' }}">
+                {% if form.title.errors %}<span class="error-text">{{ form.title.errors.0 }}</span>{% endif %}
+              </div>
+
+              <div class="form-group">
                 <label>Author <span class="required-field">*</span></label>
                 <input type="text" name="author" value="{{ entry.author|default:form.author.value|default:'' }}">
                 {% if form.author.errors %}<span class="error-text">{{ form.author.errors.0 }}</span>{% endif %}
               </div>
 
               <div class="form-group">
-                <label>Title <span class="required-field">*</span></label>
-                <input type="text" name="title" value="{{ entry.title|default:form.title.value|default:'' }}">
-                {% if form.title.errors %}<span class="error-text">{{ form.title.errors.0 }}</span>{% endif %}
+                <label>Year <span class="required-field">*</span></label>
+                <input type="text" name="year" value="{{ entry.year|default:form.year.value|default:'' }}">
+                {% if form.year.errors %}<span class="error-text">{{ form.year.errors.0 }}</span>{% endif %}
               </div>
 
               <div class="form-group">
@@ -503,8 +509,36 @@
               </div>
 
               <div class="form-group">
+                <label>Publisher</label>
+                <input type="text" name="publisher" value="{{ entry.publisher|default:form.publisher.value|default:'' }}">
+              </div>
+
+              <div class="form-group">
+                <label>Place of Publication</label>
+                <input type="text" name="place_of_publication" value="{{ entry.place_of_publication|default:form.place_of_publication.value|default:'' }}">
+              </div>
+            </div>
+
+            <!-- COLUMN 2 -->
+            <div>
+              <div class="form-group">
                 <label>Pages</label>
                 <input type="text" name="pages" value="{{ entry.pages|default:form.pages.value|default:'' }}">
+              </div>
+
+              <div class="form-group">
+                <label>ISBN</label>
+                <input type="text" name="isbn" value="{{ entry.isbn|default:form.isbn.value|default:'' }}">
+              </div>
+
+              <div class="form-group">
+                <label>P.O. Number</label>
+                <input type="text" name="po_number" value="{{ entry.po_number|default:form.po_number.value|default:'' }}">
+              </div>
+
+              <div class="form-group">
+                <label>S.I. Number</label>
+                <input type="text" name="si_number" value="{{ entry.si_number|default:form.si_number.value|default:'' }}">
               </div>
 
               <div class="form-group">
@@ -518,42 +552,8 @@
               </div>
 
               <div class="form-group">
-                <label>Place of Publication</label>
-                <input type="text" name="place_of_publication" value="{{ entry.place_of_publication|default:form.place_of_publication.value|default:'' }}">
-              </div>
-            </div>
-
-            <!-- COLUMN 2 -->
-            <div>
-              <div class="form-group">
-                <label>Publisher</label>
-                <input type="text" name="publisher" value="{{ entry.publisher|default:form.publisher.value|default:'' }}">
-              </div>
-
-              <div class="form-group">
-                <label>Year <span class="required-field">*</span></label>
-                <input type="text" name="year" value="{{ entry.year|default:form.year.value|default:'' }}">
-                {% if form.year.errors %}<span class="error-text">{{ form.year.errors.0 }}</span>{% endif %}
-              </div>
-
-              <div class="form-group">
-                <label>ISBN</label>
-                <input type="text" name="isbn" value="{{ entry.isbn|default:form.isbn.value|default:'' }}">
-              </div>
-
-              <div class="form-group">
                 <label>Budget Charge</label>
                 <input type="text" name="budget_charge" value="{{ entry.budget_charge|default:form.budget_charge.value|default:'' }}">
-              </div>
-
-              <div class="form-group">
-                <label>P.O. Number</label>
-                <input type="text" name="po_number" value="{{ entry.po_number|default:form.po_number.value|default:'' }}">
-              </div>
-
-              <div class="form-group">
-                <label>S.I. Number</label>
-                <input type="text" name="si_number" value="{{ entry.si_number|default:form.si_number.value|default:'' }}">
               </div>
 
               <div class="form-group">
@@ -606,11 +606,6 @@
                   <option value="Theology" {% if entry.section == "Theology" or form.section.value == "Theology" %}selected{% endif %}>Theology</option>
                 </select>
               </div>
-
-              <div class="form-group">
-                <label>Contents</label>
-                <input type="text" name="contents" value="{{ entry.contents|default:form.contents.value|default:'' }}">
-              </div>
             </div>
           </div>
           
@@ -641,16 +636,111 @@
     <p>Saving entry, please wait...</p>
   </div>
 
+  <!-- FLOATING IMPORT WINDOW -->
+  <style>
+    .import-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 9999;
+    }
+
+    .import-modal-window {
+      width: 60vw;
+      max-width: 700px;
+      height: 55vh;
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .import-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      border-bottom: 1px solid #e5e7eb;
+      background: #f8fafc;
+    }
+
+    .import-modal-header h3 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .import-modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      line-height: 1;
+      cursor: pointer;
+      color: #475569;
+    }
+
+    .import-modal-body {
+      flex: 1;
+      position: relative;
+    }
+
+    .import-modal-body iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+  </style>
+
+  <div id="importFloatingModal" class="import-modal-backdrop" style="display: none;" role="dialog" aria-modal="true" aria-label="Import Bibliography Entries">
+    <div class="import-modal-window">
+      <div class="import-modal-header">
+        <h3>Bulk Entry Upload</h3>
+        <button type="button" class="import-modal-close" onclick="closeImportWindow()" aria-label="Close">&times;</button>
+      </div>
+      <div class="import-modal-body">
+        <iframe
+          id="importPageFrame"
+          data-src="{% url 'import_books' %}"
+          src=""
+          title="Import Bibliography Entries"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+
   <script>
     function openSidebar() {
-      document.getElementById("sidebarMenu").style.width = "250px";
+      const sidebar = document.getElementById("sidebarMenu");
+      if (sidebar) sidebar.style.width = "250px";
     }
 
     function closeSidebar() {
-      document.getElementById("sidebarMenu").style.width = "0";
+      const sidebar = document.getElementById("sidebarMenu");
+      if (sidebar) sidebar.style.width = "0";
     }
 
-    // Show spinner overlay when form is submitted
+    function openImportWindow() {
+      const modal = document.getElementById("importFloatingModal");
+      const iframe = document.getElementById("importPageFrame");
+      if (!modal || !iframe) return;
+
+      iframe.setAttribute("src", iframe.getAttribute("data-src"));
+      modal.style.display = "flex";
+    }
+
+    function closeImportWindow() {
+      const modal = document.getElementById("importFloatingModal");
+      const iframe = document.getElementById("importPageFrame");
+      if (modal) modal.style.display = "none";
+      if (iframe) iframe.setAttribute("src", "");
+    }
+
     document.addEventListener("DOMContentLoaded", function() {
       const encodingForm = document.getElementById("encodingForm");
       if (encodingForm) {
@@ -661,9 +751,39 @@
           }
         });
       }
+
+      const modal = document.getElementById("importFloatingModal");
+      if (modal) {
+        modal.addEventListener("click", function(event) {
+          if (event.target === modal) {
+            closeImportWindow();
+          }
+        });
+      }
+
+      document.addEventListener("keydown", function(event) {
+        if (event.key === "Escape") {
+          closeImportWindow();
+        }
+      });
     });
   </script>
-
+    <div id="importFloatingModal" class="import-modal-backdrop" style="display: none;" role="dialog" aria-modal="true" aria-label="Import Bibliography Entries">
+      <div class="import-modal-window">
+        <div class="import-modal-header">
+          <h3>Import Bibliography Entries</h3>
+          <button type="button" class="import-modal-close" onclick="closeImportWindow()" aria-label="Close">&times;</button>
+        </div>
+        <div class="import-modal-body">
+          <iframe
+            id="importPageFrame"
+            data-src="{% url 'import_books' %}"
+            src=""
+            title="Import Bibliography Entries"
+          ></iframe>
+        </div>
+      </div>
+    </div>
 </body>
 </html>
 

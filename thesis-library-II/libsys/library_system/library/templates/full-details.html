@@ -165,7 +165,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: 25px;
-      margin-top: 5px;
+      margin-bottom: 20px;
     }
 
     .detail-item {
@@ -382,9 +382,9 @@
 
         <div class="details-grid">
           <div class="detail-item">
-              <div class="detail-label">Accession Number</div>
+              <div class="detail-label">Year</div>
               <div class="detail-value">
-              {% if entry.accession_number %}{{ entry.accession_number }}{% else %}<span class="empty">----------</span>{% endif %}
+              {% if entry.year %}{{ entry.year }}{% else %}<span class="empty">----------</span>{% endif %}
               </div>
           </div>
 
@@ -396,16 +396,16 @@
           </div>
 
           <div class="detail-item">
-              <div class="detail-label">Edition</div>
+              <div class="detail-label">Dealer</div>
               <div class="detail-value">
-              {% if entry.edition %}{{ entry.edition }}{% else %}<span class="empty">----------</span>{% endif %}
+              {% if entry.dealer %}{{ entry.dealer }}{% else %}<span class="empty">----------</span>{% endif %}
               </div>
           </div>
 
           <div class="detail-item">
-              <div class="detail-label">Volume</div>
+              <div class="detail-label">Edition</div>
               <div class="detail-value">
-              {% if entry.volume %}{{ entry.volume }}{% else %}<span class="empty">----------</span>{% endif %}
+              {% if entry.edition %}{{ entry.edition }}{% else %}<span class="empty">----------</span>{% endif %}
               </div>
           </div>
 
@@ -417,23 +417,16 @@
           </div>
 
           <div class="detail-item">
-              <div class="detail-label">Year</div>
+              <div class="detail-label">Price</div>
               <div class="detail-value">
-              {% if entry.year %}{{ entry.year }}{% else %}<span class="empty">----------</span>{% endif %}
+              {% if entry.price %}{{ entry.price }}{% else %}<span class="empty">----------</span>{% endif %}
               </div>
           </div>
 
           <div class="detail-item">
-              <div class="detail-label">ISBN</div>
+              <div class="detail-label">Volume</div>
               <div class="detail-value">
-              {% if entry.isbn %}{{ entry.isbn }}{% else %}<span class="empty">----------</span>{% endif %}
-              </div>
-          </div>
-
-          <div class="detail-item">
-              <div class="detail-label">Pages</div>
-              <div class="detail-value">
-              {% if entry.pages %}{{ entry.pages }}{% else %}<span class="empty">----------</span>{% endif %}
+              {% if entry.volume %}{{ entry.volume }}{% else %}<span class="empty">----------</span>{% endif %}
               </div>
           </div>
 
@@ -445,9 +438,23 @@
           </div>
 
           <div class="detail-item">
-              <div class="detail-label">Price</div>
+              <div class="detail-label">Budget Charge</div>
               <div class="detail-value">
-              {% if entry.price %}₱{{ entry.price }}{% else %}<span class="empty">----------</span>{% endif %}
+              {% if entry.budget_charge %}₱{{ entry.budget_charge }}{% else %}<span class="empty">----------</span>{% endif %}
+              </div>
+          </div>
+
+          <div class="detail-item">
+              <div class="detail-label">Pages</div>
+              <div class="detail-value">
+              {% if entry.pages %}{{ entry.pages }}{% else %}<span class="empty">----------</span>{% endif %}
+              </div>
+          </div>
+
+          <div class="detail-item">
+              <div class="detail-label">ISBN</div>
+              <div class="detail-value">
+              {% if entry.isbn %}{{ entry.isbn }}{% else %}<span class="empty">----------</span>{% endif %}
               </div>
           </div>
 
@@ -459,23 +466,9 @@
           </div>
 
           <div class="detail-item">
-              <div class="detail-label">Section</div>
+              <div class="detail-label">Accession Number</div>
               <div class="detail-value">
-              {% if entry.section %}{{ entry.section }}{% else %}<span class="empty">----------</span>{% endif %}
-              </div>
-          </div>
-
-          <div class="detail-item">
-              <div class="detail-label">Recommended By</div>
-              <div class="detail-value">
-              {% if entry.recommended_by %}{{ entry.recommended_by }}{% else %}<span class="empty">----------</span>{% endif %}
-              </div>
-          </div>
-
-          <div class="detail-item">
-              <div class="detail-label">Dealer</div>
-              <div class="detail-value">
-              {% if entry.dealer %}{{ entry.dealer }}{% else %}<span class="empty">----------</span>{% endif %}
+              {% if entry.accession_number %}{{ entry.accession_number }}{% else %}<span class="empty">----------</span>{% endif %}
               </div>
           </div>
 
@@ -487,16 +480,9 @@
           </div>
 
           <div class="detail-item">
-              <div class="detail-label">SI Number</div>
+              <div class="detail-label">Section</div>
               <div class="detail-value">
-              {% if entry.si_number %}{{ entry.si_number }}{% else %}<span class="empty">----------</span>{% endif %}
-              </div>
-          </div>
-
-          <div class="detail-item">
-              <div class="detail-label">Budget Charge</div>
-              <div class="detail-value">
-              {% if entry.budget_charge %}{{ entry.budget_charge }}{% else %}<span class="empty">----------</span>{% endif %}
+              {% if entry.section %}{{ entry.section }}{% else %}<span class="empty">----------</span>{% endif %}
               </div>
           </div>
 
@@ -506,6 +492,21 @@
               {% if entry.date_received %}{{ entry.date_received|date:"M d, Y" }}{% else %}<span class="empty">----------</span>{% endif %}
               </div>
           </div>
+
+          <div class="detail-item">
+              <div class="detail-label">SI Number</div>
+              <div class="detail-value">
+              {% if entry.si_number %}{{ entry.si_number }}{% else %}<span class="empty">----------</span>{% endif %}
+              </div>
+          </div>
+          
+          <div class="detail-item">
+              <div class="detail-label">Recommended By</div>
+              <div class="detail-value">
+              {% if entry.recommended_by %}{{ entry.recommended_by }}{% else %}<span class="empty">----------</span>{% endif %}
+              </div>
+          </div>
+
         </div>
 
         <div class="action-buttons">

@@ -409,26 +409,264 @@
       font-size: 0.78rem;
     }
 
-    .checkbox-grid {
-      column-count: 2;
-      column-gap: 15px;
+    /* COMPACT FILTER POPOVER */
+    .filter-dropdown-wrapper {
+      position: relative;
+      display: inline-block;
     }
 
-    .checkbox-grid label {
+    .filter-trigger-btn {
+      gap: 5px;
+    }
+
+    .filter-trigger-btn.has-active-filters {
+      outline: 2px solid #D19D1C;
+    }
+
+    .filter-count-badge {
+      font-weight: 700;
+      color: #facc15;
+    }
+
+    .filter-popover {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 380px;
+      max-width: calc(100vw - 24px);
+      background: #ffffff;
+      color: #1e293b;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      box-shadow: 0 16px 36px rgba(15, 23, 42, 0.22);
+      z-index: 1200;
+      overflow: hidden;
+    }
+
+    .filter-popover.is-open {
       display: block;
-      margin-bottom: 4px;
     }
 
-    #sortOverlay .overlay-content {
-      max-width: 350px;
+    .filter-popover-body {
+      max-height: 430px;
+      overflow-y: auto;
     }
 
-    #sortOverlay select {
+    .accordion-section {
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .accordion-header {
       width: 100%;
-      padding: 6px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 14px;
+      background: #f8fafc;
+      border: none;
+      font-family: 'Poppins', sans-serif;
       font-size: 0.85rem;
+      font-weight: 600;
+      color: #02062C;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .accordion-header:hover {
+      background: #f1f5f9;
+    }
+
+    .section-summary {
+      font-weight: 500;
+      color: #475569;
+      margin-left: 4px;
+    }
+
+    .accordion-panel {
+      display: none;
+      padding: 10px 14px 12px;
+      background: #ffffff;
+    }
+
+    .accordion-section.is-open .accordion-panel {
+      display: block;
+    }
+
+    .accordion-section .caret {
+      transition: transform 0.15s ease;
+      color: #475569;
+    }
+
+    .accordion-section.is-open .caret {
+      transform: rotate(180deg);
+    }
+
+    .filter-search-box {
+      position: relative;
+      margin-bottom: 8px;
+    }
+
+    .filter-search-box .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.8rem;
+      color: #64748b;
+      pointer-events: none;
+    }
+
+    .filter-search-box input {
+      width: 100%;
+      padding: 7px 10px 7px 30px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.82rem;
+      color: #0f172a;
+    }
+
+    .filter-search-box input:focus {
+      outline: none;
+      border-color: #02062C;
+    }
+
+    .filter-options-list {
+      max-height: 170px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-right: 2px;
+    }
+
+    .filter-option-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 0.8rem;
+      line-height: 1.3;
+      color: #334155;
+      cursor: pointer;
+      padding: 2px 0;
+    }
+
+    .filter-option-item input[type="checkbox"] {
+      margin-top: 2px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .filter-popover-footer {
+      position: sticky;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .clear-all-link {
+      background: none;
+      border: none;
+      padding: 4px 2px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #334155;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .clear-all-link:hover {
+      color: #02062C;
+    }
+
+    .apply-filters-btn {
+      background: #02062C;
+      color: #ffffff;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .apply-filters-btn:hover {
+      background: #0b145f;
+    }
+
+    /* SHARED BACKDROP FOR POPOVERS */
+    .popover-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 1150;
+    }
+
+    .popover-backdrop.is-open {
+      display: block;
+    }
+
+    /* SORT POPOVER (Matches Filter Popover) */
+    .sort-dropdown-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    .sort-popover {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 300px;
+      max-width: calc(100vw - 24px);
+      background: #ffffff;
+      color: #1e293b;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      box-shadow: 0 16px 36px rgba(15, 23, 42, 0.22);
+      z-index: 1200;
+      overflow: hidden;
+    }
+
+    .sort-popover.is-open {
+      display: block;
+    }
+
+    .sort-radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sort-radio-group label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: #334155;
+      cursor: pointer;
+    }
+
+    .sort-select {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.82rem;
+      color: #0f172a;
+      background: #fff;
     }
 
     /* SIDEBAR */
@@ -444,7 +682,6 @@
       padding-top: 40px;
       z-index: 1001;
     }
-
 
     .sidebar a {
       padding: 10px 0px 10px 30px;
@@ -577,11 +814,9 @@
 
   <!-- HEADER -->
   <header>
-
     <div class="logo">
       <img src="{% static 'css/images/henryluce.png' %}" alt="Library Logo">
     </div>
-
 
     <nav>
       {% if user.is_authenticated %}
@@ -609,8 +844,6 @@
         Showing results for {{ auto_departments|join:", " }} department(s).
       </div>
     {% endif %}
-
-
   </header>
 
   <div id="sidebarMenu" class="sidebar">
@@ -621,7 +854,6 @@
 
   <!-- MAIN -->
   <main>
-
     <div class="main-content-wrapper">
       <h2 class="page-title">Search Book Records</h2>  
 
@@ -650,7 +882,6 @@
 
       <!-- TOOLBAR -->
       <div class="toolbar">
-        
         <div class="search-box">
           <form method="get" action="{% url 'acquisition' %}" id="searchForm">
             <input type="hidden" name="sort_field" value="{{ sort_field }}">
@@ -659,21 +890,13 @@
             <button type="submit"><i class="fas fa-search"></i></button>
           </form>
         </div>
-          
 
         <div class="action-buttons">
           <button type="button" id="searchBtn">Search</button>
-          <!-- <a href="{% url 'acquisition_import' %}" class="action-btn">Upload List</a> -->
           <button type="button" id="filterBtn">Filter</button>
           <button type="button" id="sortBtn">Sort by</button>
-
-          <!-- Connect the button to the form using the 'form' attribute -->
           <button type="submit" form="bib-form" class="action-btn">Generate Bibliography</button>
-
-          <!-- <a href="{% url 'summary' %}" class="action-btn">Generate Summary</a> -->
-          <!-- <a href="{% url 'algorithm' %}?q={{ request.GET.q|urlencode }}&mode=jaccard_sbert" class="action-btn">Algorithm Results</a> -->
         </div>
-
       </div>
 
       <!-- Main Form wraps the results outside of action-buttons -->
@@ -696,9 +919,6 @@
                 <th>Year</th>
                 <th>ISBN</th>
                 <th>Department</th>
-                <!-- <th>Jaccard</th> -->
-                <!-- <th>SBERT</th> -->
-                <!-- <th>Score</th> -->
               </tr>
             </thead>
             <tbody>
@@ -721,13 +941,6 @@
                     <td>{{ entry.year }}</td>
                     <td>{{ entry.isbn }}</td>
                     <td>{{ entry.department }}</td>
-                    <!-- <td style="color: #4b5563;">{{ jaccard|floatformat:2 }}</td> -->
-                    <!-- <td style="color: #4b5563;">{{ sbert|floatformat:2 }}</td> -->
-                    <!-- <td>
-                      <span class="{% if score >= 0.65 %}score-high{% elif score >= 0.3 %}score-medium{% else %}score-low{% endif %}" style="font-weight: 600;">
-                        {{ score|floatformat:2 }}
-                      </span>
-                    </td> -->
                   </tr>
                 {% endwith %}
               {% empty %}
@@ -737,7 +950,6 @@
           </table>
         </div>
       </form>
-
 
       <!-- PAGINATION -->
       <div class="pagination">
@@ -753,18 +965,8 @@
       </div>
 
       <br>
-      <section>
-      <!-- <div>
-            <p>
-              Once a user has logged in, this page will show a data grid of the list of encoded book details. Only logged in users can access this page. Book details displayed will depend on which user has logged in. 
-              For example, if the user is a Liaison librarian of CCS, only book details encoded for CCS are shown. The Search box at the top allows the user to search for a specific record.
-            </p>
-
-          </div> -->
-      </section>
-
+      <section></section>
     </div>
-   
   </main>
 
   <!-- FOOTER -->
@@ -772,134 +974,270 @@
     © 2026 Henry Luce III Library, All Rights Reserved
   </footer>
 
+  <!-- Compact Filter Drop-down Popover -->
+  <div id="filterPopover" class="filter-popover" role="region" aria-label="Filter Options">
+    <form method="get" action="{% url 'acquisition' %}" id="filterForm">
+      <!-- Preserve search query and sort state -->
+      <input type="hidden" name="q" value="{{ query }}">
+      <input type="hidden" name="sort_field" value="{{ sort_field }}">
+      <input type="hidden" name="sort_order" value="{{ sort_order }}">
 
-  <!-- Filter Overlay -->
-  <div id="filterOverlay" class="overlay">
-    <div class="overlay-content">
-      <span class="close-btn" id="closeOverlay">&times;</span>
-      <h3>Filter Options</h3>
-      <form method="get" action="{% url 'acquisition' %}" id="filterForm">
-
-        <!-- Preserve search query and sort state -->
-        <input type="hidden" name="q" value="{{ query }}">
-        <input type="hidden" name="sort_field" value="{{ sort_field }}">
-        <input type="hidden" name="sort_order" value="{{ sort_order }}">
-
-        <!-- Department -->
-        <div class="form-grid">
-          <div class="filter-group">
-            <h4>Department</h4>
-            <div class="checkbox-grid">
-              <label><input type="checkbox" name="department" value="College of Agriculture, Resources and Environmental Sciences" {% if "College of Agriculture, Resources and Environmental Sciences" in selected_departments %}checked{% endif %}> College of Agriculture, Resources and Environmental Sciences</label>
-              <label><input type="checkbox" name="department" value="College of Arts and Sciences" {% if "College of Arts and Sciences" in selected_departments %}checked{% endif %}> College of Arts and Sciences</label>
-              <label><input type="checkbox" name="department" value="College of Business and Accountancy" {% if "College of Business and Accountancy" in selected_departments %}checked{% endif %}> College of Business and Accountancy</label>
-              <label><input type="checkbox" name="department" value="College of Computer Studies" {% if "College of Computer Studies" in selected_departments %}checked{% endif %}> College of Computer Studies</label>
-              <label><input type="checkbox" name="department" value="College of Education" {% if "College of Education" in selected_departments %}checked{% endif %}> College of Education</label>
-              <label><input type="checkbox" name="department" value="College of Engineering" {% if "College of Engineering" in selected_departments %}checked{% endif %}> College of Engineering</label>
-              <label><input type="checkbox" name="department" value="College of Hospitality Management" {% if "College of Hospitality Management" in selected_departments %}checked{% endif %}> College of Hospitality Management</label>
-              <label><input type="checkbox" name="department" value="College of Law" {% if "College of Law" in selected_departments %}checked{% endif %}> College of Law</label>
-              <label><input type="checkbox" name="department" value="College of Medical Laboratory Sciences" {% if "College of Medical Laboratory Sciences" in selected_departments %}checked{% endif %}> College of Medical Laboratory Sciences</label>
-              <label><input type="checkbox" name="department" value="College of Nursing" {% if "College of Nursing" in selected_departments %}checked{% endif %}> College of Nursing</label>
-              <label><input type="checkbox" name="department" value="College of Pharmacy" {% if "College of Pharmacy" in selected_departments %}checked{% endif %}> College of Pharmacy</label>
-              <label><input type="checkbox" name="department" value="College of Theology" {% if "College of Theology" in selected_departments %}checked{% endif %}> College of Theology</label>
-              <label><input type="checkbox" name="department" value="Elementary" {% if "Elementary" in selected_departments %}checked{% endif %}> Elementary</label>
-              <label><input type="checkbox" name="department" value="Junior High School" {% if "Junior High School" in selected_departments %}checked{% endif %}> Junior High School</label>
-              <label><input type="checkbox" name="department" value="Kindergarten" {% if "Kindergarten" in selected_departments %}checked{% endif %}> Kindergarten</label>
-              <label><input type="checkbox" name="department" value="School of Graduate Studies" {% if "School of Graduate Studies" in selected_departments %}checked{% endif %}> School of Graduate Studies</label>
-              <label><input type="checkbox" name="department" value="Senior High School" {% if "Senior High School" in selected_departments %}checked{% endif %}> Senior High School</label>
+      <div class="filter-popover-body">
+        <!-- 1. DEPARTMENT -->
+        <div class="accordion-section is-open" data-filter-group="department">
+          <button type="button" class="accordion-header" aria-expanded="true">
+            <span class="accordion-title">Department <span class="section-summary" id="summary-department">(All)</span></span>
+            <span class="caret">&#9662;</span>
+          </button>
+          <div class="accordion-panel">
+            <div class="filter-search-box">
+              <span class="search-icon" aria-hidden="true">&#128269;</span>
+              <input type="text" id="deptSearchInput" placeholder="Search department..." autocomplete="off">
+            </div>
+            <div class="filter-options-list" id="deptOptionsList">
+              <label class="filter-option-item">
+                <input type="checkbox" name="department" value="College of Agriculture, Resources and Environmental Sciences" {% if "College of Agriculture, Resources and Environmental Sciences" in selected_departments or selected_department == "College of Agriculture, Resources and Environmental Sciences" %}checked{% endif %}>
+                <span>College of Agriculture, Resources and Environmental Sciences</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="department" value="College of Arts and Sciences" {% if "College of Arts and Sciences" in selected_departments or selected_department == "College of Arts and Sciences" %}checked{% endif %}>
+                <span>College of Arts and Sciences</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="department" value="College of Business and Accountancy" {% if "College of Business and Accountancy" in selected_departments or selected_department == "College of Business and Accountancy" %}checked{% endif %}>
+                <span>College of Business and Accountancy</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="department" value="College of Computer Studies" {% if "College of Computer Studies" in selected_departments or selected_department == "College of Computer Studies" %}checked{% endif %}>
+                <span>College of Computer Studies</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="department" value="College of Education" {% if "College of Education" in selected_departments or selected_department == "College of Education" %}checked{% endif %}>
+                <span>College of Education</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="department" value="College of Engineering" {% if "College of Engineering" in selected_departments or selected_department == "College of Engineering" %}checked{% endif %}>
+                <span>College of Engineering</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="department" value="College of Hospitality Management" {% if "College of Hospitality Management" in selected_departments or selected_department == "College of Hospitality Management" %}checked{% endif %}>
+                <span>College of Hospitality Management</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="department" value="College of Law" {% if "College of Law" in selected_departments or selected_department == "College of Law" %}checked{% endif %}>
+                <span>College of Law</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="department" value="College of Medical Laboratory Sciences" {% if "College of Medical Laboratory Sciences" in selected_departments or selected_department == "College of Medical Laboratory Sciences" %}checked{% endif %}>
+                <span>College of Medical Laboratory Sciences</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="department" value="College of Nursing" {% if "College of Nursing" in selected_departments or selected_department == "College of Nursing" %}checked{% endif %}>
+                <span>College of Nursing</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="department" value="College of Pharmacy" {% if "College of Pharmacy" in selected_departments or selected_department == "College of Pharmacy" %}checked{% endif %}>
+                <span>College of Pharmacy</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="department" value="College of Theology" {% if "College of Theology" in selected_departments or selected_department == "College of Theology" %}checked{% endif %}>
+                <span>College of Theology</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="department" value="Elementary" {% if "Elementary" in selected_departments or selected_department == "Elementary" %}checked{% endif %}>
+                <span>Elementary</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="department" value="Junior High School" {% if "Junior High School" in selected_departments or selected_department == "Junior High School" %}checked{% endif %}>
+                <span>Junior High School</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="department" value="Kindergarten" {% if "Kindergarten" in selected_departments or selected_department == "Kindergarten" %}checked{% endif %}>
+                <span>Kindergarten</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="department" value="School of Graduate Studies" {% if "School of Graduate Studies" in selected_departments or selected_department == "School of Graduate Studies" %}checked{% endif %}>
+                <span>School of Graduate Studies</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="department" value="Senior High School" {% if "Senior High School" in selected_departments or selected_department == "Senior High School" %}checked{% endif %}>
+                <span>Senior High School</span>
+              </label>
             </div>
           </div>
         </div>
 
-
-        <!-- Section -->
-        <div class="form-grid">
-          <div class="filter-group">
-            <h4>Section</h4>
-            <div class="checkbox-grid">
-              <label><input type="checkbox" name="section" value="Circulation/Reserve" {% if "Circulation/Reserve" in selected_sections %}checked{% endif %}> Circulation/Reserve</label>
-              <label><input type="checkbox" name="section" value="Elementary" {% if "Elementary" in selected_sections %}checked{% endif %}> Elementary</label>
-              <label><input type="checkbox" name="section" value="Filipiniana" {% if "Filipiniana" in selected_sections %}checked{% endif %}> Filipiniana</label>
-              <label><input type="checkbox" name="section" value="Graduate Studies" {% if "Graduate Studies" in selected_sections %}checked{% endif %}> Graduate Studies</label>
-              <label><input type="checkbox" name="section" value="Junior High School" {% if "Junior High School" in selected_sections %}checked{% endif %}> Junior High School</label>
-              <label><input type="checkbox" name="section" value="Kindergarten" {% if "Kindergarten" in selected_sections %}checked{% endif %}> Kindergarten</label>
-              <label><input type="checkbox" name="section" value="Law" {% if "Law" in selected_sections %}checked{% endif %}> Law</label>
-              <label><input type="checkbox" name="section" value="Reference" {% if "Reference" in selected_sections %}checked{% endif %}> Reference</label>
-              <label><input type="checkbox" name="section" value="Senior High School" {% if "Senior High School" in selected_sections %}checked{% endif %}> Senior High School</label>
-              <label><input type="checkbox" name="section" value="Theology" {% if "Theology" in selected_sections %}checked{% endif %}> Theology</label>
+        <!-- 2. SECTION -->
+        <div class="accordion-section" data-filter-group="section">
+          <button type="button" class="accordion-header" aria-expanded="false">
+            <span class="accordion-title">Section <span class="section-summary" id="summary-section">(All)</span></span>
+            <span class="caret">&#9662;</span>
+          </button>
+          <div class="accordion-panel">
+            <div class="filter-options-list">
+              <label class="filter-option-item">
+                <input type="checkbox" name="section" value="Circulation/Reserve" {% if "Circulation/Reserve" in selected_sections or selected_section == "Circulation/Reserve" %}checked{% endif %}>
+                <span>Circulation/Reserve</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="section" value="Elementary" {% if "Elementary" in selected_sections or selected_section == "Elementary" %}checked{% endif %}>
+                <span>Elementary</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="section" value="Filipiniana" {% if "Filipiniana" in selected_sections or selected_section == "Filipiniana" %}checked{% endif %}>
+                <span>Filipiniana</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="section" value="Graduate Studies" {% if "Graduate Studies" in selected_sections or selected_section == "Graduate Studies" %}checked{% endif %}>
+                <span>Graduate Studies</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="section" value="Junior High School" {% if "Junior High School" in selected_sections or selected_section == "Junior High School" %}checked{% endif %}>
+                <span>Junior High School</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="section" value="Kindergarten" {% if "Kindergarten" in selected_sections or selected_section == "Kindergarten" %}checked{% endif %}>
+                <span>Kindergarten</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="section" value="Law" {% if "Law" in selected_sections or selected_section == "Law" %}checked{% endif %}>
+                <span>Law</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="section" value="Reference" {% if "Reference" in selected_sections or selected_section == "Reference" %}checked{% endif %}>
+                <span>Reference</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="section" value="Senior High School" {% if "Senior High School" in selected_sections or selected_section == "Senior High School" %}checked{% endif %}>
+                <span>Senior High School</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="section" value="Theology" {% if "Theology" in selected_sections or selected_section == "Theology" %}checked{% endif %}>
+                <span>Theology</span>
+              </label>
             </div>
           </div>
         </div>
 
-        <!-- Recommended By -->
-        <div class="form-grid">
-          <div class="filter-group">
-            <h4>Recommended By</h4>
-            <div class="checkbox-grid">
-              <label><input type="checkbox" name="recommended_by" value="Director of Libraries" {% if "Director of Libraries" in selected_recommended_bys %}checked{% endif %}> Director of Libraries</label>
-              <label><input type="checkbox" name="recommended_by" value="Dean" {% if "Dean" in selected_recommended_bys %}checked{% endif %}> Dean</label>
-              <label><input type="checkbox" name="recommended_by" value="Principal" {% if "Principal" in selected_recommended_bys %}checked{% endif %}> Principal</label>
+        <!-- 3. RECOMMENDED BY -->
+        <div class="accordion-section" data-filter-group="recommended_by">
+          <button type="button" class="accordion-header" aria-expanded="false">
+            <span class="accordion-title">Recommended By <span class="section-summary" id="summary-recommended_by">(All)</span></span>
+            <span class="caret">&#9662;</span>
+          </button>
+          <div class="accordion-panel">
+            <div class="filter-options-list">
+              <label class="filter-option-item">
+                <input type="checkbox" name="recommended_by" value="Director of Libraries" {% if "Director of Libraries" in selected_recommended_bys or selected_recommended_by == "Director of Libraries" %}checked{% endif %}>
+                <span>Director of Libraries</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="recommended_by" value="Dean" {% if "Dean" in selected_recommended_bys or selected_recommended_by == "Dean" %}checked{% endif %}>
+                <span>Dean</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="recommended_by" value="Principal" {% if "Principal" in selected_recommended_bys or selected_recommended_by == "Principal" %}checked{% endif %}>
+                <span>Principal</span>
+              </label>
             </div>
           </div>
         </div>
 
-        <!-- Year -->
-        <div class="form-grid">
-          <div class="filter-group">
-            <h4>Year</h4>
-            <div class="checkbox-grid">
-              <label><input type="checkbox" name="year" value="2020" {% if "2020" in selected_years %}checked{% endif %}> 2020</label>
-              <label><input type="checkbox" name="year" value="2021" {% if "2021" in selected_years %}checked{% endif %}> 2021</label>
-              <label><input type="checkbox" name="year" value="2022" {% if "2022" in selected_years %}checked{% endif %}> 2022</label>
-              <label><input type="checkbox" name="year" value="2023" {% if "2023" in selected_years %}checked{% endif %}> 2023</label>
-              <label><input type="checkbox" name="year" value="2024" {% if "2024" in selected_years %}checked{% endif %}> 2024</label>
-              <label><input type="checkbox" name="year" value="2025" {% if "2025" in selected_years %}checked{% endif %}> 2025</label>
-              <label><input type="checkbox" name="year" value="2026" {% if "2026" in selected_years %}checked{% endif %}> 2026</label>
+        <!-- 4. YEAR -->
+        <div class="accordion-section" data-filter-group="year">
+          <button type="button" class="accordion-header" aria-expanded="false">
+            <span class="accordion-title">Year <span class="section-summary" id="summary-year">(All)</span></span>
+            <span class="caret">&#9662;</span>
+          </button>
+          <div class="accordion-panel">
+            <div class="filter-options-list">
+              <label class="filter-option-item">
+                <input type="checkbox" name="year" value="2020" {% if "2020" in selected_years or selected_year == "2020" %}checked{% endif %}>
+                <span>2020</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="year" value="2021" {% if "2021" in selected_years or selected_year == "2021" %}checked{% endif %}>
+                <span>2021</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="year" value="2022" {% if "2022" in selected_years or selected_year == "2022" %}checked{% endif %}>
+                <span>2022</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="year" value="2023" {% if "2023" in selected_years or selected_year == "2023" %}checked{% endif %}>
+                <span>2023</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="year" value="2024" {% if "2024" in selected_years or selected_year == "2024" %}checked{% endif %}>
+                <span>2024</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="year" value="2025" {% if "2025" in selected_years or selected_year == "2025" %}checked{% endif %}>
+                <span>2025</span>
+              </label>
+              <label class="filter-option-item">
+                <input type="checkbox" name="year" value="2026" {% if "2026" in selected_years or selected_year == "2026" %}checked{% endif %}>
+                <span>2026</span>
+              </label>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="action-buttons">
-          <button type="submit">Apply Filters</button>
-        </div>
-      </form>
-    </div>
+      <!-- Sticky Popover Footer -->
+      <div class="filter-popover-footer">
+        <button type="button" class="clear-all-link" id="clearAllFiltersBtn">Clear all</button>
+        <button type="submit" class="apply-filters-btn">Apply Filters</button>
+      </div>
+    </form>
   </div>
 
+<!-- Dim Backdrop for Popovers -->
+  <div id="popoverBackdrop" class="popover-backdrop"></div>
 
-
-  <!-- Sort Overlay -->
-  <div id="sortOverlay" class="overlay">
-    <div class="overlay-content">
-      <span class="close-btn" id="closeSort">&times;</span>
-      <h3>Sort Options</h3>
-      <form method="get" action="{% url 'acquisition' %}" id="sortForm">
-
-        <!-- Field Selection -->
-        <div class="filter-group">
-          <h4>Sort Field</h4>
-          <select name="sort_field">
-            <option value="accession_number" {% if sort_field == "accession_number" %}selected{% endif %}>Accession Number</option>
-            <option value="title" {% if sort_field == "title" %}selected{% endif %}>Title</option>
-            <option value="author" {% if sort_field == "author" %}selected{% endif %}>Author</option>
-            <option value="year" {% if sort_field == "year" %}selected{% endif %}>Year</option>
-            <!-- <option value="price" {% if sort_field == "price" %}selected{% endif %}>Price</option> -->
-            <!-- <option value="budget_charge" {% if sort_field == "budget_charge" %}selected{% endif %}>Budget Charge</option> -->
-          </select>
-        </div> <!-- Added Missing Closing Div Here -->
-
-        <!-- Order Selection -->
-        <div class="filter-group">
-          <h4>Order</h4>
-          <label><input type="radio" name="sort_order" value="asc" {% if request.GET.sort_order != "desc" %}checked{% endif %}> Ascending</label>
-          <label><input type="radio" name="sort_order" value="desc" {% if request.GET.sort_order == "desc" %}checked{% endif %}> Descending</label>
+  <!-- Compact Sort Drop-down Popover -->
+  <div id="sortPopover" class="sort-popover" role="region" aria-label="Sort Options">
+    <form method="get" action="{% url 'acquisition' %}" id="sortForm">
+      <div class="filter-popover-body">
+        <!-- 1. SORT FIELD -->
+        <div class="accordion-section is-open">
+          <button type="button" class="accordion-header" aria-expanded="true">
+            <span class="accordion-title">Sort Field</span>
+            <span class="caret">&#9662;</span>
+          </button>
+          <div class="accordion-panel">
+            <select name="sort_field" class="sort-select">
+              <option value="accession_number" {% if sort_field == "accession_number" %}selected{% endif %}>Accession Number</option>
+              <option value="title" {% if sort_field == "title" %}selected{% endif %}>Title</option>
+              <option value="author" {% if sort_field == "author" %}selected{% endif %}>Author</option>
+              <option value="year" {% if sort_field == "year" %}selected{% endif %}>Year</option>
+              <!-- <option value="price" {% if sort_field == "price" %}selected{% endif %}>Price</option> -->
+              <!-- <option value="budget_charge" {% if sort_field == "budget_charge" %}selected{% endif %}>Budget Charge</option> -->
+            </select>
+          </div>
         </div>
 
-        <div class="action-buttons">
-          <button type="submit">Apply Sorting</button>
+        <!-- 2. ORDER -->
+        <div class="accordion-section is-open">
+          <button type="button" class="accordion-header" aria-expanded="true">
+            <span class="accordion-title">Order</span>
+            <span class="caret">&#9662;</span>
+          </button>
+          <div class="accordion-panel">
+            <div class="sort-radio-group">
+              <label><input type="radio" name="sort_order" value="asc" {% if request.GET.sort_order != "desc" %}checked{% endif %}> Ascending</label>
+              <label><input type="radio" name="sort_order" value="desc" {% if request.GET.sort_order == "desc" %}checked{% endif %}> Descending</label>
+            </div>
+          </div>
         </div>
-      </form>
-    </div>
+      </div>
+
+      <!-- Sticky Popover Footer -->
+      <div class="filter-popover-footer">
+        <button type="button" class="clear-all-link" id="resetSortBtn">Reset</button>
+        <button type="submit" class="apply-filters-btn">Apply Sorting</button>
+      </div>
+    </form>
   </div>
 
   <!-- Processing Overlay Modal HTML -->
@@ -907,7 +1245,6 @@
     <div class="spinner"></div>
     <p>Processing request, please wait...</p>
   </div>
-
 
   <!-- Processing Modal Script -->
   <script>
@@ -919,22 +1256,17 @@
     }
 
     document.addEventListener("DOMContentLoaded", function() {
-      // Show spinner when any form submits
       const formsToTrack = document.querySelectorAll("form");
       formsToTrack.forEach(form => {
         form.addEventListener("submit", showLoading);
       });
 
-      // Show spinner when clicking pagination links
       const paginationLinks = document.querySelectorAll(".pagination a");
       paginationLinks.forEach(link => {
         link.addEventListener("click", showLoading);
       });
     });
-
   </script>
-
-
 
   <!-- Search Script -->
   <script>
@@ -948,7 +1280,7 @@
         params.set("q", searchInput ? searchInput.value || "" : "");
         params.set("page", "1");
         
-        showLoading(); // Forces the overlay to open before redirecting
+        showLoading();
         window.location.href = window.location.pathname + "?" + params.toString();
       }
 
@@ -968,41 +1300,175 @@
     });
   </script>
 
-
-
-  <!-- Filter Overlay Script -->
+<!-- Filter & Sort Popover Script -->
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      const filterBtn = document.getElementById("filterBtn");
-      const overlay = document.getElementById("filterOverlay");
-      const closeBtn = document.getElementById("closeOverlay");
-      const filterForm = document.getElementById("filterForm");
+      const backdrop = document.getElementById("popoverBackdrop");
 
-      if (filterBtn) {
+      // --- FILTER POPOVER ---
+      const filterBtn = document.getElementById("filterBtn");
+      const filterPopover = document.getElementById("filterPopover");
+      const filterForm = document.getElementById("filterForm");
+      const clearAllBtn = document.getElementById("clearAllFiltersBtn");
+      const deptSearchInput = document.getElementById("deptSearchInput");
+
+      let filterWrapper = document.getElementById("filterDropdownWrapper");
+      if (filterBtn && filterPopover && !filterWrapper) {
+        filterWrapper = document.createElement("div");
+        filterWrapper.id = "filterDropdownWrapper";
+        filterWrapper.className = "filter-dropdown-wrapper";
+        filterBtn.classList.add("filter-trigger-btn");
+        filterBtn.parentNode.insertBefore(filterWrapper, filterBtn);
+        filterWrapper.appendChild(filterBtn);
+        filterWrapper.appendChild(filterPopover);
+      }
+
+      const totalBadge = document.createElement("span");
+      totalBadge.id = "filterTotalBadge";
+      totalBadge.className = "filter-count-badge";
+      if (filterBtn && !document.getElementById("filterTotalBadge")) {
+        filterBtn.appendChild(totalBadge);
+      }
+
+      // --- SORT POPOVER ---
+      const sortBtn = document.getElementById("sortBtn");
+      const sortPopover = document.getElementById("sortPopover");
+      const sortForm = document.getElementById("sortForm");
+      const resetSortBtn = document.getElementById("resetSortBtn");
+
+      let sortWrapper = document.getElementById("sortDropdownWrapper");
+      if (sortBtn && sortPopover && !sortWrapper) {
+        sortWrapper = document.createElement("div");
+        sortWrapper.id = "sortDropdownWrapper";
+        sortWrapper.className = "sort-dropdown-wrapper";
+        sortBtn.parentNode.insertBefore(sortWrapper, sortBtn);
+        sortWrapper.appendChild(sortBtn);
+        sortWrapper.appendChild(sortPopover);
+      }
+
+      function syncBackdrop() {
+        const anyOpen =
+          (filterPopover && filterPopover.classList.contains("is-open")) ||
+          (sortPopover && sortPopover.classList.contains("is-open"));
+        if (backdrop) {
+          backdrop.classList.toggle("is-open", anyOpen);
+        }
+      }
+
+      function closeAllPopovers() {
+        if (filterPopover) {
+          filterPopover.classList.remove("is-open");
+          if (filterBtn) filterBtn.setAttribute("aria-expanded", "false");
+        }
+        if (sortPopover) {
+          sortPopover.classList.remove("is-open");
+          if (sortBtn) sortBtn.setAttribute("aria-expanded", "false");
+        }
+        syncBackdrop();
+      }
+
+      function updateFilterSummaries() {
+        if (!filterForm) return;
+        const groups = ["department", "section", "recommended_by", "year"];
+        let totalSelected = 0;
+
+        groups.forEach(group => {
+          const checked = Array.from(
+            filterForm.querySelectorAll(`input[name="${group}"]:checked`)
+          ).map(el => el.value);
+
+          totalSelected += checked.length;
+          const summaryEl = document.getElementById(`summary-${group}`);
+          if (summaryEl) {
+            if (checked.length === 0) {
+              summaryEl.textContent = "(All)";
+            } else if (checked.length <= 2) {
+              summaryEl.textContent = `(${checked.join(", ")})`;
+            } else {
+              summaryEl.textContent = `(${checked.length} selected)`;
+            }
+          }
+        });
+
+        totalBadge.textContent = totalSelected > 0 ? `(${totalSelected})` : "";
+        if (filterBtn) {
+          filterBtn.classList.toggle("has-active-filters", totalSelected > 0);
+        }
+      }
+
+      if (filterBtn && filterPopover) {
         filterBtn.addEventListener("click", function(e) {
           e.preventDefault();
-          overlay.style.display = "block";
+          e.stopPropagation();
+          const wasOpen = filterPopover.classList.contains("is-open");
+          closeAllPopovers();
+          if (!wasOpen) {
+            filterPopover.classList.add("is-open");
+            filterBtn.setAttribute("aria-expanded", "true");
+            syncBackdrop();
+          }
         });
       }
 
-      if (closeBtn) {
-        closeBtn.addEventListener("click", function() {
-          overlay.style.display = "none";
+      if (sortBtn && sortPopover) {
+        sortBtn.addEventListener("click", function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          const wasOpen = sortPopover.classList.contains("is-open");
+          closeAllPopovers();
+          if (!wasOpen) {
+            sortPopover.classList.add("is-open");
+            sortBtn.setAttribute("aria-expanded", "true");
+            syncBackdrop();
+          }
         });
       }
 
-      window.addEventListener("click", function(e) {
-        if (e.target === overlay) {
-          overlay.style.display = "none";
+      if (backdrop) {
+        backdrop.addEventListener("click", closeAllPopovers);
+      }
+
+      document.addEventListener("click", function(e) {
+        const insideFilter = filterWrapper && filterWrapper.contains(e.target);
+        const insideSort = sortWrapper && sortWrapper.contains(e.target);
+        if (!insideFilter && !insideSort) {
+          closeAllPopovers();
         }
       });
 
+      document.addEventListener("keydown", function(e) {
+        if (e.key === "Escape") {
+          closeAllPopovers();
+        }
+      });
+
+      document.querySelectorAll(".filter-popover .accordion-header, .sort-popover .accordion-header").forEach(header => {
+        header.addEventListener("click", function() {
+          const section = this.closest(".accordion-section");
+          if (!section) return;
+          const isOpen = section.classList.toggle("is-open");
+          this.setAttribute("aria-expanded", String(isOpen));
+        });
+      });
+
+      if (deptSearchInput) {
+        deptSearchInput.addEventListener("input", function() {
+          const query = this.value.trim().toLowerCase();
+          const items = document.querySelectorAll("#deptOptionsList .filter-option-item");
+          items.forEach(item => {
+            const text = item.textContent.trim().toLowerCase();
+            item.style.display = text.includes(query) ? "" : "none";
+          });
+        });
+      }
+
       if (filterForm) {
+        filterForm.addEventListener("change", updateFilterSummaries);
+
         filterForm.addEventListener("submit", function(e) {
           e.preventDefault();
-          
+
           const newParams = new URLSearchParams(window.location.search);
-          
           newParams.delete("department");
           newParams.delete("section");
           newParams.delete("recommended_by");
@@ -1017,41 +1483,24 @@
 
           newParams.set("page", "1");
 
-          showLoading(); // Forces the overlay to open before redirecting
+          showLoading();
           window.location.href = window.location.pathname + "?" + newParams.toString();
         });
       }
-    });
-  </script>
 
-
-
-  <!-- Sort Overlay Script -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const sortBtn = document.getElementById("sortBtn");
-      const sortOverlay = document.getElementById("sortOverlay");
-      const closeSort = document.getElementById("closeSort");
-      const sortForm = document.getElementById("sortForm");
-
-      if (sortBtn) {
-        sortBtn.addEventListener("click", function(e) {
-          e.preventDefault();
-          sortOverlay.style.display = "block";
+      if (clearAllBtn && filterForm) {
+        clearAllBtn.addEventListener("click", function() {
+          filterForm.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.checked = false;
+          });
+          if (deptSearchInput) {
+            deptSearchInput.value = "";
+            deptSearchInput.dispatchEvent(new Event("input"));
+          }
+          updateFilterSummaries();
+          filterForm.dispatchEvent(new Event("submit", { cancelable: true }));
         });
       }
-
-      if (closeSort) {
-        closeSort.addEventListener("click", function() {
-          sortOverlay.style.display = "none";
-        });
-      }
-
-      window.addEventListener("click", function(e) {
-        if (e.target === sortOverlay) {
-          sortOverlay.style.display = "none";
-        }
-      });
 
       if (sortForm) {
         sortForm.addEventListener("submit", function(e) {
@@ -1065,15 +1514,24 @@
           currentParams.set("sort_order", sortOrder);
           currentParams.set("page", "1");
 
-          showLoading(); // Forces the overlay to open before redirecting
+          showLoading();
           window.location.href = window.location.pathname + "?" + currentParams.toString();
         });
       }
+
+      if (resetSortBtn && sortForm) {
+        resetSortBtn.addEventListener("click", function() {
+          const fieldSelect = sortForm.querySelector("select[name='sort_field']");
+          const ascRadio = sortForm.querySelector("input[name='sort_order'][value='asc']");
+          if (fieldSelect) fieldSelect.value = "accession_number";
+          if (ascRadio) ascRadio.checked = true;
+          sortForm.dispatchEvent(new Event("submit", { cancelable: true }));
+        });
+      }
+
+      updateFilterSummaries();
     });
   </script>
-
-
-
 
   <!-- Sidebar Navigation Controls -->
   <script>
@@ -1085,8 +1543,6 @@
       document.getElementById("sidebarMenu").style.width = "0";
     }
   </script>
-
-
 
   <!-- Bibliography Selection & Form Validation (Cross-Page Persistent) -->
   <script>
@@ -1162,7 +1618,7 @@
             return;
           }
 
-          showLoading(); // Show overlay while generating bibliography
+          showLoading();
 
           const existingInjected = bibForm.querySelectorAll(".injected-selected-id");
           existingInjected.forEach(el => el.remove());
@@ -1189,7 +1645,6 @@
       }
     });
   </script>
-
 
   <!-- REFRESH / RELOAD Page -->
   <script>
@@ -1218,10 +1673,5 @@
       });
     })();
   </script>
-  
-
-
-
 </body>
 </html>
-
