@@ -658,7 +658,7 @@ def encoding_page(request):
         },
     )
 
-
+@login_required
 def acquisition_page(request):
     query = request.GET.get("q", "").strip()
     selected_years = request.GET.getlist("year")
@@ -735,8 +735,6 @@ def acquisition_page(request):
 
 
 @login_required
-@user_passes_test(is_librarian)
-@user_passes_test(is_admin)
 def acquisition_batch_page(request):
     is_librarian = request.user.groups.filter(name="Librarian").exists()
     results = []
@@ -828,12 +826,11 @@ def acquisition_batch_page(request):
 
 
 @login_required
-@user_passes_test(is_librarian)
-@user_passes_test(is_admin)
 def acquisition_import_page(request):
+
     return render(request, "batch-search-upload.html")
 
-
+@login_required
 def full_details_page(request, entry_id):
     entry = get_object_or_404(BibliographyEntry, id=entry_id)
     is_librarian = (

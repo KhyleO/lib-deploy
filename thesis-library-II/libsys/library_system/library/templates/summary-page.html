@@ -23,12 +23,10 @@
     <nav>
       {% if user.is_authenticated %}
         <a href="{% url 'home' %}">Home</a>
-        <a href="{% url 'acquisition' %}">Acquisition</a>
-        <a href="{% url 'acquisition_batch' %}">Acquisition</a>
-        <!-- <a href="{% url 'bibliography' %}">Bibliography</a>
-        <a href="{% url 'summary' %}">Summary</a> -->
+        <a href="{% url 'acquisition' %}">Search Records</a>
+        <a href="{% url 'acquisition_batch' %}">Syllabus Match</a>
         {% if is_librarian %}
-          <a href="{% url 'encoding' %}">Encoding</a>
+        <a href="{% url 'encoding' %}">Encoding</a>
         {% endif %}
       {% endif %}
     </nav>

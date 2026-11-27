@@ -393,9 +393,7 @@
       {% if user.is_authenticated %}
         <a href="{% url 'home' %}">Home</a>
         <a href="{% url 'acquisition' %}">Search Records</a>
-        {% if is_librarian %}
         <a href="{% url 'acquisition_batch' %}">Syllabus Match</a>
-        {% endif %}
         {% if is_librarian %}
         <a href="{% url 'encoding' %}">Encoding</a>
         {% endif %}
