@@ -254,6 +254,16 @@
         {% if filename %}
           <p class="file-info"><strong>Uploaded file:</strong> {{ filename }}</p>
         {% endif %}
+        
+        {% if import_message %}
+          <p class="file-info"><strong>Status:</strong> {{ import_message }}</p>
+        {% endif %}
+
+        {% if form.errors %}
+          <div class="file-info" style="color: #dc2626;">
+            {{ form.errors }}
+          </div>
+        {% endif %}
 
         <div class="action-bar">
           <button type="submit" name="action" value="preview" class="btn-submit">Upload &amp; Preview</button>

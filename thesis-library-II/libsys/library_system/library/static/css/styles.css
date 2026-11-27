@@ -1,4 +1,4 @@
-/* --- acquisition-page.html --- */
+/* --- acquisition-indiv-search.html --- */
 *{
       margin:0;
       padding:0;
@@ -372,7 +372,7 @@
     }
 
 
-/* --- index-page.html --- */
+/* --- home-page.html --- */
 * {
       margin: 0;
       padding: 0;
@@ -751,7 +751,7 @@
     }
 
 
-/* --- acquisition-import.html --- */
+/* --- batch-search-upload.html --- */
 main {
       flex: 1;
       padding: 20px;
@@ -1449,7 +1449,7 @@ main {
     }
 
 
-/* --- encoding-page.html --- */
+/* --- encoding-import-page.html --- */
 *{
       margin:0;
       padding:0;
@@ -1744,7 +1744,7 @@ main {
     }
 
 
-/* --- full-details.html --- */
+/* --- entry-full-details.html --- */
 * {
       margin: 0;
       padding: 0;
