@@ -8,6 +8,7 @@ class BibliographyEntry(models.Model):
     title = models.CharField(max_length=500)
     year = models.IntegerField()
     author = models.CharField(max_length=255)
+
     
     edition = models.CharField(blank=True, max_length=50, null=True)
     volume = models.CharField(blank=True, max_length=50, null=True)
